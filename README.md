@@ -6,9 +6,9 @@ Broadcast pour demander les photos.
 Choisir son nom + photo de profil (caméra)-> donnée persistante.
 pop up quand on est connecté au salon.
 
-Choisi random 10 photos si on veut pas on secoue pour en avoir 10 nouvelles.
+Choisir random 10 photos si on veut pas on secoue pour en avoir 10 nouvelles.
 
-Chaque manche dure 15 sec -> plus on réponds vite plus on a de points. Il a des strick avec des multiplicateurs.
+Chaque manche dure 15 sec -> plus on répond vite plus on a de points. Il a des strick avec des multiplicateurs.
 
 Intent qui renvoit vers nos github
 
@@ -22,19 +22,23 @@ Accueil :
 	- Profil
 	- Paramètres
 	
-Quand on clique sur le bouton création d'une partie :
+Quand on clique sur le bouton création d'une partie: vue rounds :
 	- On choisi le nombre de rounds
 	
-Quand on a choisi les rounds:
-	- Choisi 10 photos aléatoire
-	- Bouuton accepté
+Quand on a choisi les rounds: vue photos:
+	- Choisi 10 photos aléatoires
+	- Bouton accepté
 	- Bouton relancé
+
+Quand on clique sur rejoindre une partie :
+	- Ca nous demande nos photos -> vues des photos
+	- Rentrer le code pin -> renvoie vers la vues accueil game et si ca marche pas pop up code pin invalide // partie non trouvé 
 	
-Quand on clique sur accepté :
+Quand on clique sur accepté : accueil game:
 	- Affichage du pin de la game
 	- Affichage du nom des joueurs + leur photo de profile
 	- Bouton pour rechoisir des images
-	- Bouton pour rechoisir le nombre de rounds -> uniquement l'host
+	- Bouton pour rechoisir le nombre de rounds -> uniquement l'host, grisé pour les autres
 	- Bouton pour lancer la partie
 	
 Vue de partie * fois par rapport au nombre de rounds :
@@ -45,9 +49,9 @@ Vue de partie * fois par rapport au nombre de rounds :
 		- En bas de la photo des cases à cliquer avec nom + photo => Que 4 max (1 à 3 joueurs tous afficher, à 4 et + ca prends aléatoirement 4 joueurs à chaque tours
 		
    Quand le temps est fini :
-	   floutage de la photo, on peut plus répondre et ça affiche la bonne réponse en vert et si on a mis la mauvaise elle passe en rouge (ça passe automotiquement)
+	  floutage de la photo, on peut plus répondre et ça affiche la bonne réponse en vert et si on a mis la mauvaise elle passe en rouge (ça passe automotiquement)
 		
-  Page de semi-classement :
+   Page de semi-classement :
 		- Le Classement de tout le monde avec à leur streak si il a, le plus rapide avec l'éclair et le plus lent avec l'escargot (ça passe automotiquement)
 	
 Page classement :
@@ -58,6 +62,6 @@ Page classement :
 Page stats fin :
 	- Le plus rapide à avoir répondu à une question + son temps
 	- La plus longue série + son nombre
-	- bouton rejouer (l'host clique dessus ca affiche une pop up aux autres pour le rejoindre), bouton grisé pour les autres // on revient au sélecteur de photos
+	- bouton rejouer (l'host clique dessus ca affiche une pop up aux autres pour le rejoindre, passer le pin automatiquement), bouton grisé pour les autres // on revient au sélecteur de photos, vue photos
 	- bouton pour revoir le classement
 	

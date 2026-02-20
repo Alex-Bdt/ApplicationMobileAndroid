@@ -10,7 +10,7 @@ Choisir random 10 photos si on veut pas on secoue pour en avoir 10 nouvelles.
 
 Chaque manche dure 15 sec -> plus on répond vite plus on a de points. Il a des strick avec des multiplicateurs.
 
-Intent qui renvoit vers nos github
+Intent qui renvoit vers le repo du github du projet, et le readme
 
 Quand on lance la première fois l'application on arrive sur la création de profil :
 	- Photo de profil -> appareil photo ou galerie
@@ -21,6 +21,20 @@ Accueil :
 	- Rejoindre une partie
 	- Profil
 	- Paramètres
+	- Bouton pour lancer la game
+	- Icone pour renvoyer sur le readme "?"
+
+Profil :
+	- Photo avec un bouton pour changer
+	- Edit text nom déja rempli avec l'autres
+	- Bouton valider
+	- Bouton pour revenir en arrière croix rouge
+
+Paramètres :
+	- Changement de langues
+	- Bouton pour le readme
+	- Bouton pour le repo
+	- Bouton revenir en arriere croix rouge
 	
 Quand on clique sur le bouton création d'une partie: vue rounds :
 	- On choisi le nombre de rounds

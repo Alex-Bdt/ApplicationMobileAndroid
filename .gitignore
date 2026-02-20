@@ -1,0 +1,6 @@
+/build
+build.gradle.kts
+proguard-rules.pro
+src/test
+src/androidTest
+

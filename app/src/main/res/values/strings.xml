@@ -11,5 +11,6 @@
 
     <!-- =============== Vues Paramètres =============== -->
     <string name="close">X</string>
+    <string name="nameUser">Name</string>
     <string name="save">SAVE</string>
 </resources>

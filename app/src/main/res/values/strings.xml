@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Rien_a_Cacher</string>
+
+    <!-- =============== Vues Acceuil =============== -->
+    <string name="logo">Rien A Cacher ?</string>
+    <string name="play">Play</string>
+    <string name="join">Join</string>
+    <string name="create">Create</string>
+    <string name="setting">Set</string>
+    <string name="profile">Pro</string>
+    <string name="questions">\?</string>
 </resources>

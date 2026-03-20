@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#121212">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:padding="4dp" />
+
+    <!-- Bouton relancer, flottant au dessus de la grille -->
+    <Button
+        android:id="@+id/btnReload"
+        android:layout_width="160dp"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:text="Reroll"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#6200EE"
+        android:elevation="6dp" />
+
+    <!-- Affiché pendant le chargement, si chargement -->
+    <LinearLayout
+        android:id="@+id/loadingLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chargement des photos..."
+            android:textColor="#AAAAAA"
+            android:textSize="14sp"
+            android:layout_marginTop="12dp" />
+
+    </LinearLayout>
+
+</FrameLayout>

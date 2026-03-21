@@ -41,7 +41,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chargement des photos..."
+            android:text="Loading pics..."
             android:textColor="#AAAAAA"
             android:textSize="14sp"
             android:layout_marginTop="12dp" />

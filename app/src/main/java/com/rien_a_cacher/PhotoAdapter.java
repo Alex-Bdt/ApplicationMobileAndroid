@@ -37,13 +37,10 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
 
     @Override
     public void onBindViewHolder(PhotoViewHolder holder, int position) {
-        GamePhoto photo = photos.get(position);
-
-        // Glide charge depuis le fichier copié (plus stable que l'URI pour l'affichage)
         Glide.with(holder.imageView.getContext())
-                .load(photo.getFilePath())
-                .diskCacheStrategy(DiskCacheStrategy.NONE)  // ← ignore le cache disque
-                .skipMemoryCache(true)                       // ← ignore le cache mémoire
+                .load(photos.get(position).getFilePath())
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .centerCrop()
                 .placeholder(android.R.drawable.ic_menu_gallery)
                 .error(android.R.drawable.ic_menu_close_clear_cancel)

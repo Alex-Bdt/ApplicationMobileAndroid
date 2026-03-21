@@ -5,13 +5,15 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
+import com.rien_a_cacher.P2P.HostActivity;
+import com.rien_a_cacher.P2P.JoinActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,8 +31,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button button = findViewById(R.id.btnGo);
-        button.setOnClickListener(v -> checkPermissionAndGo());
+        findViewById(R.id.btnGo).setOnClickListener(v -> checkPermissionAndGo());
+        findViewById(R.id.btnHost).setOnClickListener(v ->
+                startActivity(new Intent(this, HostActivity.class)));
+        findViewById(R.id.btnJoin).setOnClickListener(v ->
+                startActivity(new Intent(this, JoinActivity.class)));
     }
 
     private void checkPermissionAndGo() {

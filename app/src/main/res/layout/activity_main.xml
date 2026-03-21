@@ -25,4 +25,29 @@
         android:textColor="#FFFFFF"
         android:backgroundTint="#6200EE" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="── Multiplayer ──"
+        android:textColor="#555555"
+        android:textSize="13sp"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/btnHost"
+        android:layout_width="220dp"
+        android:layout_height="56dp"
+        android:text="Host Game"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#03DAC5"
+        android:layout_marginBottom="12dp" />
+
+    <Button
+        android:id="@+id/btnJoin"
+        android:layout_width="220dp"
+        android:layout_height="56dp"
+        android:text="Join Game"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#BB86FC" />
+
 </LinearLayout>

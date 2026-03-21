@@ -45,9 +45,10 @@ public class GalleryActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         loadingLayout = findViewById(R.id.loadingLayout);
         btnReload = findViewById(R.id.btnReload);
-        btnReload.setOnClickListener(v -> loadPhotos());
 
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+
+        btnReload.setOnClickListener(v -> loadPhotos());
 
         loadPhotos();
     }
@@ -56,11 +57,8 @@ public class GalleryActivity extends AppCompatActivity {
         loadingLayout.setVisibility(View.VISIBLE);
         btnReload.setEnabled(false); // désactive le bouton temporairement
 
-        //Glide.get(this).clearMemory(); // vide le cache du thread UI
-
         // Thread background : requête MediaStore
         executor.execute(() -> {
-            //Glide.get(this).clearDiskCache(); // vide le cache du thraed en back
             clearTempFolder();
 
             // 1. Récupère tous les URIs de la galerie
@@ -144,19 +142,20 @@ public class GalleryActivity extends AppCompatActivity {
         return result;
     }
 
+    private void clearTempFolder() {
+        File tempDir = new File(getCacheDir(), "game_photos");
+        if (tempDir.exists()) {
+            File[] files = tempDir.listFiles();
+            if (files != null) {
+                for (File file : files) file.delete();
+            }
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         executor.shutdown();
         clearTempFolder();
-    }
-
-    private void clearTempFolder() {
-        File tempDir = new File(getCacheDir(), "game_photos");
-        if (tempDir.exists()) {
-            for (File file : tempDir.listFiles()) {
-                file.delete();
-            }
-        }
     }
 }

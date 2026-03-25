@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#121212"
+    android:padding="32dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Game"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="12dp" />
+
+    <Button
+        android:id="@+id/btnGo"
+        android:layout_width="220dp"
+        android:layout_height="56dp"
+        android:text="START"
+        android:textSize="16sp"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#6200EE" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="── Multiplayer ──"
+        android:textColor="#555555"
+        android:textSize="13sp"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/btnHost"
+        android:layout_width="220dp"
+        android:layout_height="56dp"
+        android:text="Host Game"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#03DAC5"
+        android:layout_marginBottom="12dp" />
+
+    <Button
+        android:id="@+id/btnJoin"
+        android:layout_width="220dp"
+        android:layout_height="56dp"
+        android:text="Join Game"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#BB86FC" />
+
+</LinearLayout>

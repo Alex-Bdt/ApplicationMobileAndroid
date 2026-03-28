@@ -3,14 +3,22 @@
 
     <!-- =============== Vue Acceuil =============== -->
     <string name="logo">Rien A Cacher ?</string>
-    <string name="join">Join</string>
-    <string name="create">Create</string>
+    <string name="join">Join Game</string>
+    <string name="create">Create Game</string>
+    <string name="soloGame">Solo Game</string>
     <string name="setting">Set</string>
     <string name="profile">Pro</string>
     <string name="questions">\?</string>
 
-    <!-- =============== Vues Paramètres =============== -->
+    <!-- =============== Vue Profil =============== -->
+    <string name="textSetting">Settings</string>
+    <string name="textLanguage">Language :</string>
+    <string name="readMe">ReadMe</string>
+    <string name="repo">Repo</string>
+    <string name="back">Back</string>
+
+    <!-- =============== Vue Paramètres =============== -->
     <string name="close">X</string>
-    <string name="nameUser">Name</string>
+    <string name="nameUser">Name :</string>
     <string name="save">SAVE</string>
 </resources>

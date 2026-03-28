@@ -1,42 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:id="@+id/setting"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
+    android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btnClose"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/close" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/textSetting"
+            android:textColor="#fff"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnClose"
+            android:layout_width="75sp"
+            android:layout_height="75sp"
+            android:layout_gravity="end"
+            android:backgroundTint="#000"
+            android:text="@string/close"
+            android:textColor="#fff" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/btnEditPhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="120sp"
+        android:layout_height="120sp"
+        android:layout_gravity="center"
+        android:backgroundTint="#000"
+        android:text="photo"
+        android:textColor="#fff" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_gravity="center">
 
         <TextView
             android:id="@+id/textNameUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/nameUser" />
+            android:layout_gravity="center"
+            android:text="@string/nameUser"
+            android:textColor="#fff" />
 
         <EditText
             android:id="@+id/editTextNameUser"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
+            android:layout_height="wrap_content"
+            android:text="@string/nameUser"
+            android:textColor="#fff" />
     </LinearLayout>
 
     <Button
         android:id="@+id/btnSaveProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/save"/>
+        android:layout_gravity="center"
+        android:backgroundTint="#000"
+        android:text="@string/save"
+        android:textColor="#fff"/>
 </LinearLayout>

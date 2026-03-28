@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        findViewById(R.id.btnGo).setOnClickListener(v -> checkPermissionAndGo());
+        findViewById(R.id.btnSolo).setOnClickListener(v -> checkPermissionAndGo());
         findViewById(R.id.btnHost).setOnClickListener(v ->
                 startActivity(new Intent(this, HostActivity.class)));
         findViewById(R.id.btnJoin).setOnClickListener(v ->
@@ -60,5 +60,4 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, GalleryActivity.class);
         startActivity(intent);
     }
-
 }

@@ -14,6 +14,15 @@
         android:textSize="28sp"
         android:textStyle="bold"
         android:textColor="#FFFFFF"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Initialisation..."
+        android:textSize="13sp"
+        android:textColor="#AAAAAA"
         android:layout_marginBottom="32dp" />
 
     <TextView

@@ -5,8 +5,11 @@ import android.content.pm.PackageManager;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +17,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.rien_a_cacher.R;
 
@@ -23,23 +28,27 @@ import java.util.List;
 public class JoinActivity extends AppCompatActivity
     implements WifiDirectManager.WifiDirectListener, ClientConnection.ClientListener {
 
+    private static final String TAG = "WifiDirect";
+
     private TextView tvStatus;
+    private RecyclerView rvRooms;
+    private LinearLayout pinLayout;
     private EditText etPin;
-    private Button btnConnect;
     private Button btnSubmitPin;
 
     private WifiDirectManager wifiDirectManager;
     private ClientConnection clientConnection;
-    private List<WifiP2pDevice> discoveredDevices;
+    private RoomAdapter roomAdapter;
+    private List<WifiP2pDevice> discoveredDevices = new ArrayList<>();
+
 
     private final ActivityResultLauncher<String[]> requestPermissionsLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
-                boolean allGranted = !result.containsValue(false);
-                if (allGranted) {
+                if (!result.containsValue(false)) {
                     onPermissionsGranted();
                 } else {
                     Toast.makeText(this,
-                            "Permissions Wi-Fi refusées, impossible de rejoindre une partie",
+                            "Permissions Wi-Fi refusées",
                             Toast.LENGTH_LONG).show();
                 }
             });
@@ -50,32 +59,41 @@ public class JoinActivity extends AppCompatActivity
         setContentView(R.layout.activity_join);
 
         tvStatus     = findViewById(R.id.tvStatus);
+        rvRooms      = findViewById(R.id.rvRooms);
+        pinLayout    = findViewById(R.id.pinLayout);
         etPin        = findViewById(R.id.etPin);
-        btnConnect   = findViewById(R.id.btnConnect);
         btnSubmitPin = findViewById(R.id.btnSubmitPin);
 
-        wifiDirectManager = new WifiDirectManager(this, this);
-        wifiDirectManager.registerReceiver();
-
-        tvStatus.setText("Finding games...");
-
-        btnConnect.setOnClickListener(v -> {
-            if (discoveredDevices != null && !discoveredDevices.isEmpty()) {
-                wifiDirectManager.connect(discoveredDevices.get(0));
-                tvStatus.setText("Connecting...");
-            } else {
-                Toast.makeText(this, "No game found", Toast.LENGTH_SHORT).show();
-            }
+        // Setup RecyclerView des salles
+        roomAdapter = new RoomAdapter(discoveredDevices, device -> {
+            // Clic sur une salle → tentative de connexion
+            tvStatus.setText("Connexion à " + device.deviceName + "...");
+            rvRooms.setVisibility(View.GONE);
+            wifiDirectManager.stopDiscovery();
+            wifiDirectManager.connectToDevice(device);
+            wifiDirectManager.startConnectionPolling();
         });
+        rvRooms.setLayoutManager(new LinearLayoutManager(this));
+        rvRooms.setAdapter(roomAdapter);
 
+        // Soumission du PIN
         btnSubmitPin.setOnClickListener(v -> {
             String pinInput = etPin.getText().toString().trim();
-            if (pinInput.length() == 4 && clientConnection != null) {
-                clientConnection.submitPin(pinInput);
-            } else {
-                Toast.makeText(this, "PIN invalide (4 chiffres requis)", Toast.LENGTH_SHORT).show();
+
+            if (pinInput.length() != 4) {
+                Toast.makeText(this, "Le PIN doit contenir 4 chiffres", Toast.LENGTH_SHORT).show();
+                return;
             }
+            if (clientConnection == null) {
+                Toast.makeText(this, "Pas encore connecté au host", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            clientConnection.submitPin(pinInput);
+            btnSubmitPin.setEnabled(false);
         });
+        wifiDirectManager = new WifiDirectManager(this, this);
+        wifiDirectManager.registerReceiver();
 
         checkWifiPermissionsAndStart();
     }
@@ -107,36 +125,45 @@ public class JoinActivity extends AppCompatActivity
     }
 
     private void onPermissionsGranted() {
-        tvStatus.setText("Recherche de parties...");
+        tvStatus.setText("Recherche de salles...");
         wifiDirectManager.startDiscovery();
     }
 
     // WifiDirectListener
     @Override
     public void onDevicesDiscovered(List<WifiP2pDevice> devices) {
-        discoveredDevices = devices;
-        tvStatus.setText(devices.size() + " partie(s) trouvée(s)");
-        btnConnect.setEnabled(!devices.isEmpty());
+        Log.d(TAG, "onDevicesDiscovered : " + devices.size());
+        discoveredDevices.clear();
+        discoveredDevices.addAll(devices);
+        roomAdapter.notifyDataSetChanged();
+
+        if (devices.isEmpty()) {
+            tvStatus.setText("Aucune salle trouvée — recherche en cours...");
+        } else {
+            tvStatus.setText(devices.size() + " salle(s) trouvée(s)");
+        }
     }
 
     @Override
     public void onConnectionInfoAvailable(String hostAddress, boolean isGroupOwner) {
-        tvStatus.setText("Connecté ! Saisissez le PIN communiqué par le host");
+        Log.d(TAG, "onConnectionInfoAvailable hostAddress=" + hostAddress);
+        wifiDirectManager.stopConnectionPolling();
+        tvStatus.setText("Connecté ! Saisissez le PIN");
+        pinLayout.setVisibility(View.VISIBLE);
         clientConnection = new ClientConnection(hostAddress, this);
         clientConnection.connect();
-        etPin.setEnabled(true);
-        btnSubmitPin.setEnabled(true);
     }
 
     @Override
     public void onError(String message) {
+        Log.d(TAG, "onError: " + message);
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     // --- ClientListener ---
     @Override
     public void onPinAccepted() {
-        tvStatus.setText("PIN valid ! Waiting...");
+        tvStatus.setText("PIN accepté ! En attente du lancement...");
         etPin.setEnabled(false);
         btnSubmitPin.setEnabled(false);
     }
@@ -145,12 +172,12 @@ public class JoinActivity extends AppCompatActivity
     public void onPinRejected() {
         tvStatus.setText("PIN incorrect, réessayez");
         etPin.setText("");
+        btnSubmitPin.setEnabled(true);
     }
 
     @Override
     public void onGameStarted() {
-        tvStatus.setText("Game started !");
-
+        tvStatus.setText("La partie commence !");
         // TODO : lancer l'écran de jeu
     }
 

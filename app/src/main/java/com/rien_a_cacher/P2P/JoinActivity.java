@@ -77,7 +77,10 @@ public class JoinActivity extends AppCompatActivity
 
         // Soumission du PIN
         btnSubmitPin.setOnClickListener(v -> {
+            Log.d(TAG, "btnSubmitPin cliqué !");
             String pinInput = etPin.getText().toString().trim();
+            Log.d(TAG, "pinInput=" + pinInput + " length=" + pinInput.length());
+            Log.d(TAG, "clientConnection=" + clientConnection);
 
             if (pinInput.length() != 4) {
                 Toast.makeText(this, "Le PIN doit contenir 4 chiffres", Toast.LENGTH_SHORT).show();
@@ -87,9 +90,7 @@ public class JoinActivity extends AppCompatActivity
                 Toast.makeText(this, "Pas encore connecté au host", Toast.LENGTH_SHORT).show();
                 return;
             }
-
             clientConnection.submitPin(pinInput);
-            btnSubmitPin.setEnabled(false);
         });
         wifiDirectManager = new WifiDirectManager(this, this);
         wifiDirectManager.registerReceiver();
@@ -149,6 +150,8 @@ public class JoinActivity extends AppCompatActivity
         wifiDirectManager.stopConnectionPolling();
         tvStatus.setText("Connecté ! Saisissez le PIN");
         pinLayout.setVisibility(View.VISIBLE);
+        Log.d(TAG, "pinLayout visibility=" + pinLayout.getVisibility()); // doit être 0
+        Log.d(TAG, "btnSubmitPin visibility=" + btnSubmitPin.getVisibility()); // doit être 0
         clientConnection = new ClientConnection(hostAddress, this);
         clientConnection.connect();
     }

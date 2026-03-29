@@ -66,11 +66,10 @@ public class JoinActivity extends AppCompatActivity
 
         // Setup RecyclerView des salles
         roomAdapter = new RoomAdapter(discoveredDevices, device -> {
-            // Clic sur une salle → tentative de connexion
             tvStatus.setText("Connexion à " + device.deviceName + "...");
             rvRooms.setVisibility(View.GONE);
             wifiDirectManager.stopDiscovery();
-            wifiDirectManager.connectToDevice(device);
+            wifiDirectManager.connectToDevice(device); // utilise SSID/passphrase en interne
             wifiDirectManager.startConnectionPolling();
         });
         rvRooms.setLayoutManager(new LinearLayoutManager(this));

@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import java.util.List;
@@ -23,6 +24,10 @@ import java.util.stream.Collectors;
 public class WifiDirectManager {
 
     private static final String TAG = "WifiDirect";
+
+    // SSID et mot de passe fixes → pas de MAC randomisée, connexions stables
+    private static final String GROUP_SSID       = "DIRECT-PhotoGame";
+    private static final String GROUP_PASSPHRASE = "photogame123";
 
     public interface WifiDirectListener {
         void onDevicesDiscovered(List<WifiP2pDevice> devices);
@@ -62,7 +67,6 @@ public class WifiDirectManager {
         }
     };
 
-
     public WifiDirectManager(Context context, WifiDirectListener listener) {
         this.context = context;
         this.listener = listener;
@@ -90,34 +94,43 @@ public class WifiDirectManager {
             listener.onError("Permission Wi-Fi manquante");
             return;
         }
-        // Supprime un éventuel groupe persistant avant d'en créer un propre
+        // Supprime d'abord tout groupe persistant
         manager.removeGroup(channel, new WifiP2pManager.ActionListener() {
-            @Override
-            public void onSuccess() {
+            @Override public void onSuccess() {
                 Log.d(TAG, "removeGroup OK → createGroup");
-                createGroupInternal();
+                // Délai Samsung : attend que le channel soit libéré
+                new Handler(Looper.getMainLooper()).postDelayed(
+                        () -> createGroupInternal(), 500);
             }
-            @Override
-            public void onFailure(int reason) {
-                Log.d(TAG, "removeGroup (pas de groupe existant) → createGroup");
-                createGroupInternal();
+            @Override public void onFailure(int reason) {
+                Log.d(TAG, "removeGroup (pas de groupe) → createGroup");
+                new Handler(Looper.getMainLooper()).postDelayed(
+                        () -> createGroupInternal(), 500);
             }
         });
     }
 
     @SuppressLint("MissingPermission")
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     private void createGroupInternal() {
-        manager.createGroup(channel, new WifiP2pManager.ActionListener() {
-            @Override
-            public void onSuccess() {
+        if (!hasRequiredPermissions()) return;
+
+        // SSID et passphrase fixes → adresse MAC stable, pas de randomisation
+        WifiP2pConfig config = new WifiP2pConfig.Builder()
+                .setNetworkName(GROUP_SSID)
+                .setPassphrase(GROUP_PASSPHRASE)
+                .enablePersistentMode(true)
+                .build();
+
+        manager.createGroup(channel, config, new WifiP2pManager.ActionListener() {
+            @Override public void onSuccess() {
                 Log.d(TAG, "createGroup() onSuccess");
-                // Démarre la découverte pour être visible aux clients
-                startDiscoveryInternal();
-                // Vérifie l'état du groupe
+                // Vérifie l'état du groupe et notifie le listener
                 requestConnectionInfo();
+                // Démarre la découverte pour être visible
+                startDiscoveryInternal();
             }
-            @Override
-            public void onFailure(int reason) {
+            @Override public void onFailure(int reason) {
                 Log.d(TAG, "createGroup() onFailure reason=" + reason);
                 listener.onError("Échec création groupe : " + reason);
             }
@@ -167,38 +180,92 @@ public class WifiDirectManager {
             listener.onError("Permission Wi-Fi manquante");
             return;
         }
-        // Nettoie d'abord tout groupe persistant côté client
-        manager.removeGroup(channel, new WifiP2pManager.ActionListener() {
-            @Override
-            public void onSuccess() {
-                Log.d(TAG, "removeGroup client OK → connect");
-                connectInternal(device);
+
+        Log.d(TAG, "connectToDevice → requestConnectionInfo d'abord");
+
+        // Samsung : stoppe la découverte AVANT de connecter
+        manager.stopPeerDiscovery(channel, new WifiP2pManager.ActionListener() {
+            @Override public void onSuccess() {
+                Log.d(TAG, "stopPeerDiscovery OK → connect");
+                // Délai Samsung : laisse le channel se stabiliser
+                new Handler(Looper.getMainLooper()).postDelayed(
+                        () -> connectInternal(device), 500);
             }
-            @Override
-            public void onFailure(int reason) {
-                Log.d(TAG, "removeGroup client (normal) → connect");
-                connectInternal(device);
+            @Override public void onFailure(int reason) {
+                Log.d(TAG, "stopPeerDiscovery failed=" + reason + " → connect quand même");
+                new Handler(Looper.getMainLooper()).postDelayed(
+                        () -> connectInternal(device), 500);
             }
         });
     }
 
     @SuppressLint("MissingPermission")
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     private void connectInternal(WifiP2pDevice device) {
-        WifiP2pConfig config = new WifiP2pConfig();
-        config.deviceAddress = device.deviceAddress;
-        config.groupOwnerIntent = 0; // client = jamais Group Owner
+        if (!hasRequiredPermissions()) return;
 
-        Log.d(TAG, "connectInternal() sur : " + device.deviceAddress);
+        // Connexion avec le même SSID/passphrase que le host
+        // → contourne la MAC randomisée, Samsung reconnaît le groupe
+        WifiP2pConfig config = new WifiP2pConfig.Builder()
+                .setNetworkName(GROUP_SSID)
+                .setPassphrase(GROUP_PASSPHRASE)
+                .build();
+
+        Log.d(TAG, "connectInternal() sur : " + device.deviceAddress
+                + " name=" + device.deviceName
+                + " status=" + device.status);
 
         manager.connect(channel, config, new WifiP2pManager.ActionListener() {
-            @Override
-            public void onSuccess() {
+            @Override public void onSuccess() {
                 Log.d(TAG, "connect() onSuccess");
             }
-            @Override
-            public void onFailure(int reason) {
+            @Override public void onFailure(int reason) {
                 Log.d(TAG, "connect() onFailure reason=" + reason);
                 listener.onError("Échec connexion : " + reason);
+            }
+        });
+    }
+
+    @SuppressLint("MissingPermission")
+    private void doConnect(WifiP2pDevice device) {
+        WifiP2pConfig config = new WifiP2pConfig();
+        config.deviceAddress = device.deviceAddress;
+        // Ne pas forcer groupOwnerIntent sur Samsung — laisser la négociation automatique
+        // config.groupOwnerIntent = 0; ← supprime cette ligne
+
+        Log.d(TAG, "doConnect() sur : " + device.deviceAddress
+                + " name=" + device.deviceName
+                + " status=" + device.status);
+
+        manager.connect(channel, config, new WifiP2pManager.ActionListener() {
+            @Override public void onSuccess() {
+                Log.d(TAG, "doConnect() onSuccess");
+            }
+            @Override public void onFailure(int reason) {
+                Log.d(TAG, "doConnect() onFailure reason=" + reason);
+                // Sur Samsung, essaie avec un délai de 2s
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    Log.d(TAG, "Retry doConnect après délai...");
+                    retryConnect(device);
+                }, 2000);
+            }
+        });
+    }
+
+    @SuppressLint("MissingPermission")
+    private void retryConnect(WifiP2pDevice device) {
+        if (!hasRequiredPermissions()) return;
+
+        WifiP2pConfig config = new WifiP2pConfig();
+        config.deviceAddress = device.deviceAddress;
+
+        manager.connect(channel, config, new WifiP2pManager.ActionListener() {
+            @Override public void onSuccess() {
+                Log.d(TAG, "retryConnect() onSuccess");
+            }
+            @Override public void onFailure(int reason) {
+                Log.d(TAG, "retryConnect() onFailure reason=" + reason);
+                listener.onError("Impossible de se connecter (code " + reason + ")");
             }
         });
     }
@@ -257,6 +324,7 @@ public class WifiDirectManager {
                                 peers.getDeviceList().stream().collect(Collectors.toList())
                         );
                     });
+
                 } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
                     Log.d(TAG, "CONNECTION_CHANGED reçu");
                     requestConnectionInfo();

@@ -39,6 +39,7 @@
         <activity android:name=".GalleryActivity"/>
         <activity android:name=".P2P.HostActivity" />
         <activity android:name=".P2P.JoinActivity" />
+        <activity android:name=".GameActivity" />
     </application>
 
 </manifest>

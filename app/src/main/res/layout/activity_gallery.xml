@@ -11,17 +11,37 @@
         android:clipToPadding="false"
         android:padding="4dp" />
 
-    <!-- Bouton relancer, flottant au dessus de la grille -->
-    <Button
-        android:id="@+id/btnReload"
-        android:layout_width="160dp"
-        android:layout_height="48dp"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="16dp"
-        android:text="Reroll"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#6200EE"
-        android:elevation="6dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btnReload"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:text="Reroll"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#444444"
+            android:elevation="6dp" />
+
+        <Button
+            android:id="@+id/btnValidate"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="Valider"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#6200EE"
+            android:elevation="6dp" />
+
+    </LinearLayout>
 
     <!-- Affiché pendant le chargement, si chargement -->
     <LinearLayout

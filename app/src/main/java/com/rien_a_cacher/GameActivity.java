@@ -1,6 +1,7 @@
 package com.rien_a_cacher;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -32,17 +33,20 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     private ImageView ivPhoto;
     private TextView tvTimer;
     private TextView tvScore;
+    private TextView  tvCombo;
+    private TextView  tvLastPoints;
     private Button btnChoice1, btnChoice2, btnChoice3, btnChoice4;
     private Button btnNext;
 
     private List<GamePhoto> photos;
     private int currentIndex = 0;
-    private int score = 0;
     private int correctButton = 0; // index 0-3 du bon bouton
 
+    private ScoreCalculator scoreCalculator = new ScoreCalculator();
+    private long questionStartMs = 0;
     private CountDownTimer countDownTimer;
 
-    // Shake
+    // Mouvement
     private SensorManager sensorManager;
     private Sensor accelerometer;
     private float lastX, lastY, lastZ;
@@ -56,6 +60,8 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         ivPhoto   = findViewById(R.id.ivPhoto);
         tvTimer   = findViewById(R.id.tvTimer);
         tvScore   = findViewById(R.id.tvScore);
+        tvCombo       = findViewById(R.id.tvCombo);
+        tvLastPoints  = findViewById(R.id.tvLastPoints);
         btnChoice1 = findViewById(R.id.btnChoice1);
         btnChoice2 = findViewById(R.id.btnChoice2);
         btnChoice3 = findViewById(R.id.btnChoice3);
@@ -84,7 +90,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
             if (currentIndex < photos.size()) {
                 loadQuestion();
             } else {
-                showEndScreen();
+                goToLeaderboard();
             }
         });
 
@@ -97,7 +103,9 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     private void loadQuestion() {
         btnNext.setVisibility(View.GONE);
+        tvLastPoints.setVisibility(View.INVISIBLE);
         resetButtons();
+        updateScoreDisplay();
 
         GamePhoto photo = photos.get(currentIndex);
 
@@ -108,12 +116,11 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                 .centerCrop()
                 .into(ivPhoto);
 
-        // Génère les 4 choix : 3 faux + 1 vrai mélangés
+        // 3 faux + 1 vrai mélangés
         List<String> choices = new ArrayList<>();
         choices.add(SOLO_PLAYER); // le bon
         for (String fake : FAKE_PLAYERS) choices.add(fake);
         Collections.shuffle(choices);
-
         correctButton = choices.indexOf(SOLO_PLAYER);
 
         Button[] buttons = {btnChoice1, btnChoice2, btnChoice3, btnChoice4};
@@ -121,8 +128,9 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
             buttons[i].setText(choices.get(i));
         }
 
-        tvScore.setText("Score : " + score + " / " + photos.size());
+        //tvScore.setText("Score : " + score + " / " + photos.size());
 
+        questionStartMs = System.currentTimeMillis();
         startTimer();
     }
 
@@ -133,10 +141,10 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     private void startTimer() {
         if (countDownTimer != null) countDownTimer.cancel();
 
-        countDownTimer = new CountDownTimer(TIMER_SECONDS * 1000L, 1000) {
+        countDownTimer = new CountDownTimer(TIMER_SECONDS * 1000L, 100) {
             @Override
             public void onTick(long millisUntilFinished) {
-                int secondsLeft = (int) (millisUntilFinished / 1000);
+                int secondsLeft = (int) (millisUntilFinished / 1000.0);
                 tvTimer.setText(secondsLeft + "s");
                 // Rouge quand il reste 3s ou moins
                 tvTimer.setTextColor(secondsLeft <= 3
@@ -149,6 +157,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                 tvTimer.setText("0s");
                 tvTimer.setTextColor(Color.parseColor("#FF5252"));
                 // Temps écoulé = mauvaise réponse
+                scoreCalculator.onWrongAnswer();
                 revealAnswers(-1);
             }
         }.start();
@@ -160,8 +169,36 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     private void onChoiceSelected(int selectedIndex) {
         if (countDownTimer != null) countDownTimer.cancel();
-        if (selectedIndex == correctButton) score++;
+
+        if (selectedIndex == correctButton) {
+            long elapsed = System.currentTimeMillis() - questionStartMs;
+            int  points  = scoreCalculator.onCorrectAnswer(elapsed);
+            showPointsGained(points);
+        } else {
+            scoreCalculator.onWrongAnswer();
+        }
+
         revealAnswers(selectedIndex);
+        updateScoreDisplay();
+    }
+
+    private void showPointsGained(int points) {
+        tvLastPoints.setVisibility(View.VISIBLE);
+        tvLastPoints.setText("+" + points + " pts");
+    }
+
+    private void updateScoreDisplay() {
+        tvScore.setText(scoreCalculator.getTotalScore() + " pts");
+
+        int combo = scoreCalculator.getCombo();
+        if (combo >= 2) {
+            float mult = scoreCalculator.getMultiplier();
+            tvCombo.setVisibility(View.VISIBLE);
+            tvCombo.setText("🔥 ×" + String.format("%.1f", mult) //🔥
+                    + "  combo " + combo);
+        } else {
+            tvCombo.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void revealAnswers(int selectedIndex) {
@@ -188,15 +225,9 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
             }
         }
 
-        tvScore.setText("Score : " + score + " / " + photos.size());
         btnNext.setVisibility(View.VISIBLE);
-
-        // Dernière image → bouton libellé différent
-        if (currentIndex == photos.size() - 1) {
-            btnNext.setText("Voir les résultats");
-        } else {
-            btnNext.setText("Image suivante →");
-        }
+        btnNext.setText(currentIndex == photos.size() - 1
+                ? "Voir le classement" : "Image suivante →");
     }
 
     private void resetButtons() {
@@ -210,19 +241,18 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     }
 
     // -----------------------------------------------------------------
-    // Ecran fin
+    // Classement
     // -----------------------------------------------------------------
 
-    private void showEndScreen() {
+    private void goToLeaderboard() {
         if (countDownTimer != null) countDownTimer.cancel();
-        setContentView(R.layout.activity_game_end);
 
-        TextView tvFinalScore = findViewById(R.id.tvFinalScore);
-        Button   btnReplay    = findViewById(R.id.btnReplay);
-
-        tvFinalScore.setText(score + " / " + photos.size());
-
-        btnReplay.setOnClickListener(v -> finish()); // retour à GalleryActivity
+        Intent intent = new Intent(this, LeaderboardActivity.class);
+        intent.putExtra("score_solo", scoreCalculator.getTotalScore());
+        // En solo les autres joueurs ont 0
+        intent.putExtra("player_name", SOLO_PLAYER);
+        startActivity(intent);
+        finish();
     }
 
     // -----------------------------------------------------------------

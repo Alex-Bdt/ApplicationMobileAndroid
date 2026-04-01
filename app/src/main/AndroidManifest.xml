@@ -40,6 +40,7 @@
         <activity android:name=".P2P.HostActivity" />
         <activity android:name=".P2P.JoinActivity" />
         <activity android:name=".GameActivity" />
+        <activity android:name=".LeaderboardActivity" />
     </application>
 
 </manifest>

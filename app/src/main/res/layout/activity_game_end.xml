@@ -1,55 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Fichier Temporaire -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@drawable/background_gradient"
+    android:background="#121212"
     android:padding="32dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hosting Game"
+        android:text="Partie terminée !"
         android:textSize="28sp"
         android:textStyle="bold"
-        android:textColor="#fff"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="24dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Score final"
+        android:textSize="16sp"
+        android:textColor="#AAAAAA"
         android:layout_marginBottom="8dp" />
 
     <TextView
-        android:id="@+id/tvStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Initialisation..."
-        android:textSize="13sp"
-        android:textColor="#AAAAAA"
-        android:layout_marginBottom="32dp" />
-
-    <TextView
-        android:id="@+id/tvPin"
+        android:id="@+id/tvFinalScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="64sp"
         android:textStyle="bold"
         android:textColor="#03DAC5"
-        android:letterSpacing="0.3"
-        android:layout_marginBottom="48dp" />
-
-    <TextView
-        android:id="@+id/tvPlayers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Joueurs connectés : 0"
-        android:textSize="16sp"
-        android:textColor="#fff"
         android:layout_marginBottom="48dp" />
 
     <Button
-        android:id="@+id/btnStart"
+        android:id="@+id/btnReplay"
         android:layout_width="220dp"
         android:layout_height="56dp"
-        android:text="Lancer la partie"
-        android:textColor="#fff"
-        android:backgroundTint="#000" />
+        android:text="Rejouer"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#6200EE" />
 
 </LinearLayout>

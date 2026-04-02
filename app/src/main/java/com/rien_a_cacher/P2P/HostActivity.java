@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,22 +24,25 @@ import java.util.Random;
 public class HostActivity extends AppCompatActivity
         implements WifiDirectManager.WifiDirectListener, HostServer.HostServerListener {
 
+    private static final String TAG = "WifiDirect";
+
     private TextView tvPin;
     private TextView tvPlayers;
+    private TextView tvStatus;
     private Button btnStart;
 
     private WifiDirectManager wifiDirectManager;
     private HostServer hostServer;
     private int playerCount = 0;
+    private String pin;
 
     private final ActivityResultLauncher<String[]> requestPermissionsLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
-                boolean allGranted = !result.containsValue(false);
-                if (allGranted) {
+                if (!result.containsValue(false)) {
                     onPermissionsGranted();
                 } else {
                     Toast.makeText(this,
-                            "Permissions Wi-Fi refusées, impossible de créer une partie",
+                            "Permissions Wi-Fi refusées",
                             Toast.LENGTH_LONG).show();
                 }
             });
@@ -50,17 +54,16 @@ public class HostActivity extends AppCompatActivity
 
         tvPin     = findViewById(R.id.tvPin);
         tvPlayers = findViewById(R.id.tvPlayers);
+        tvStatus  = findViewById(R.id.tvStatus);
         btnStart  = findViewById(R.id.btnStart);
 
-        // Génère un PIN à 4 chiffres
-        String pin = String.format("%04d", new Random().nextInt(10000));
+        pin = String.format("%04d", new Random().nextInt(10000));
         tvPin.setText(pin);
+        tvStatus.setText("Création du groupe...");
 
-        // Init Wi-Fi Direct
         wifiDirectManager = new WifiDirectManager(this, this);
         wifiDirectManager.registerReceiver();
 
-        // Démarre le serveur TCP
         hostServer = new HostServer(pin, this);
         hostServer.start();
 
@@ -72,6 +75,8 @@ public class HostActivity extends AppCompatActivity
             hostServer.broadcastStart();
             // TODO : lancer l'écran de jeu
         });
+
+        checkWifiPermissionsAndStart();
     }
 
     private void checkWifiPermissionsAndStart() {
@@ -94,16 +99,14 @@ public class HostActivity extends AppCompatActivity
         }
 
         if (toRequest.isEmpty()) {
-            // Toutes les permissions sont déjà accordées
             onPermissionsGranted();
         } else {
-            // Déclenche la popup système de demande de permission
             requestPermissionsLauncher.launch(toRequest.toArray(new String[0]));
         }
     }
 
     private void onPermissionsGranted() {
-        wifiDirectManager.createGroup();
+        wifiDirectManager.startAsHost();
     }
 
 
@@ -112,10 +115,15 @@ public class HostActivity extends AppCompatActivity
     public void onDevicesDiscovered(List<WifiP2pDevice> devices) {}
 
     @Override
-    public void onConnectionInfoAvailable(String hostAddress, boolean isGroupOwner) {}
-
+    public void onConnectionInfoAvailable(String hostAddress, boolean isGroupOwner) {
+        Log.d(TAG, "Host onConnectionInfoAvailable isGroupOwner=" + isGroupOwner);
+        if (isGroupOwner) {
+            tvStatus.setText("Groupe actif — en attente de joueurs");
+        }
+    }
     @Override
     public void onError(String message) {
+        Log.d(TAG, "onError: " + message);
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
@@ -134,5 +142,4 @@ public class HostActivity extends AppCompatActivity
         wifiDirectManager.removeGroup();
         hostServer.stop();
     }
-
 }

@@ -1,89 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_gradient"
-    android:orientation="vertical">
+    android:background="@drawable/background_gradient">
 
     <LinearLayout
-        android:id="@+id/layouts1"
-        android:layout_width="match_parent"
-        android:layout_height="109dp"
-        android:layout_gravity="start"
-        android:orientation="horizontal">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
 
-        <Button
+        <ImageButton
             android:id="@+id/btnProfile"
-            android:layout_width="75sp"
-            android:layout_height="75sp"
-            android:layout_gravity="start"
-            android:backgroundTint="#000"
-            android:text="@string/profile"
-            android:textColor="#fff" />
-
-        <Button
-            android:id="@+id/btnSetting"
-            android:layout_width="75sp"
-            android:layout_height="75sp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_gravity="end"
-            android:backgroundTint="#000"
-            android:text="@string/setting"
-            android:textColor="#fff" />
+            android:background="@drawable/circle_background"
+            android:contentDescription="Profil"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_profile_placeholder" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp">
+
+        </FrameLayout>
+
     </LinearLayout>
 
+
     <LinearLayout
-        android:id="@+id/layouts2"
         android:layout_width="match_parent"
-        android:layout_height="498dp"
-        android:layout_gravity="center"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="32dp">
 
         <TextView
-            android:id="@+id/textLogo"
             android:layout_width="wrap_content"
-            android:layout_height="109dp"
-            android:layout_gravity="center"
-            android:text="@string/logo"
-            android:textColor="#fff"
-            android:textSize="40sp"
-            android:textStyle="bold" />
+            android:layout_height="wrap_content"
+            android:text="Game"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="12dp" />
 
         <Button
-            android:id="@+id/btnJoin"
-            android:layout_width="210sp"
+            android:id="@+id/btnGo"
+            android:layout_width="220dp"
+            android:layout_height="56dp"
+            android:text="START"
+            android:textSize="16sp"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#6200EE" />
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="#000"
-            android:text="@string/join"
-            android:textColor="#fff" />
+            android:text="── Multiplayer ──"
+            android:textColor="#555555"
+            android:textSize="13sp"
+            android:layout_marginBottom="16dp" />
 
         <Button
             android:id="@+id/btnHost"
-            android:layout_width="210sp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="#000"
-            android:text="@string/create"
-            android:textColor="#fff" />
+            android:layout_width="220dp"
+            android:layout_height="56dp"
+            android:text="Host Game"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#03DAC5"
+            android:layout_marginBottom="12dp" />
 
         <Button
-            android:id="@+id/btnSolo"
-            android:layout_width="210sp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="#000"
-            android:text="@string/soloGame"
-            android:textColor="#fff" />
+            android:id="@+id/btnJoin"
+            android:layout_width="220dp"
+            android:layout_height="56dp"
+            android:text="Join Game"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#BB86FC" />
+
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnQuestions"
-        android:layout_width="75sp"
-        android:layout_height="75sp"
-        android:layout_gravity="start"
-        android:text="@string/questions"
-        android:textColor="#fff"
-        android:backgroundTint="#000"/>
-</LinearLayout>
+    <!-- Overlay du profil-->
+    <FrameLayout
+        android:id="@+id/profileContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</FrameLayout>

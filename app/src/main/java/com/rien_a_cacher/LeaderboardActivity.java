@@ -23,10 +23,10 @@ public class LeaderboardActivity extends AppCompatActivity {
 
         // En solo : joueur réel + 3 joueurs fictifs à 0
         List<PlayerScore> scores = new ArrayList<>();
-        scores.add(new PlayerScore(playerName != null ? playerName : "Moi", soloScore));
-        scores.add(new PlayerScore("Alice", 0));
-        scores.add(new PlayerScore("Bob",   0));
-        scores.add(new PlayerScore("Charlie", 0));
+        for (String player : GameConfig.ALL_PLAYERS) {
+            int score = player.equals(GameConfig.SOLO_PLAYER) ? soloScore : 0;
+            scores.add(new PlayerScore(player, score));
+        }
 
         // Trie par score décroissant
         scores.sort((a, b) -> b.score - a.score);

@@ -3,10 +3,6 @@ package com.rien_a_cacher;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -23,18 +19,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GameActivity extends AppCompatActivity implements SensorEventListener {
+public class GameActivity extends AppCompatActivity {
 
-    private static final int TIMER_SECONDS  = 10;
+    private static final int TIMER_SECONDS = 10;
     private static final float SHAKE_THRESHOLD = 12f;
-    private static final String SOLO_PLAYER = "Moi";
-    private static final String[] FAKE_PLAYERS = {"Alex", "Kirby", "Fabie"}; // Pour le solo
 
     private ImageView ivPhoto;
     private TextView tvTimer;
     private TextView tvScore;
-    private TextView  tvCombo;
-    private TextView  tvLastPoints;
+    private TextView tvCombo;
+    private TextView tvLastPoints;
     private Button btnChoice1, btnChoice2, btnChoice3, btnChoice4;
     private Button btnNext;
 
@@ -46,27 +40,21 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     private long questionStartMs = 0;
     private CountDownTimer countDownTimer;
 
-    // Mouvement
-    private SensorManager sensorManager;
-    private Sensor accelerometer;
-    private float lastX, lastY, lastZ;
-    private boolean sensorInitialized = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        ivPhoto   = findViewById(R.id.ivPhoto);
-        tvTimer   = findViewById(R.id.tvTimer);
-        tvScore   = findViewById(R.id.tvScore);
-        tvCombo       = findViewById(R.id.tvCombo);
-        tvLastPoints  = findViewById(R.id.tvLastPoints);
+        ivPhoto = findViewById(R.id.ivPhoto);
+        tvTimer = findViewById(R.id.tvTimer);
+        tvScore = findViewById(R.id.tvScore);
+        tvCombo = findViewById(R.id.tvCombo);
+        tvLastPoints = findViewById(R.id.tvLastPoints);
         btnChoice1 = findViewById(R.id.btnChoice1);
         btnChoice2 = findViewById(R.id.btnChoice2);
         btnChoice3 = findViewById(R.id.btnChoice3);
         btnChoice4 = findViewById(R.id.btnChoice4);
-        btnNext   = findViewById(R.id.btnNext);
+        btnNext = findViewById(R.id.btnNext);
 
         // Récupère les photos depuis l'intent
         photos = (List<GamePhoto>) getIntent().getSerializableExtra("photos");
@@ -74,10 +62,6 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
             finish();
             return;
         }
-
-        // Detecteur de mouvement
-        sensorManager  = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        accelerometer  = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         // Listeners boutons choix
         btnChoice1.setOnClickListener(v -> onChoiceSelected(0));
@@ -118,10 +102,11 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
         // 3 faux + 1 vrai mélangés
         List<String> choices = new ArrayList<>();
-        choices.add(SOLO_PLAYER); // le bon
-        for (String fake : FAKE_PLAYERS) choices.add(fake);
+        choices.add(GameConfig.SOLO_PLAYER);
+        for (String fake : GameConfig.FAKE_PLAYERS) choices.add(fake);
         Collections.shuffle(choices);
-        correctButton = choices.indexOf(SOLO_PLAYER);
+
+        correctButton = choices.indexOf(GameConfig.SOLO_PLAYER);
 
         Button[] buttons = {btnChoice1, btnChoice2, btnChoice3, btnChoice4};
         for (int i = 0; i < buttons.length; i++) {
@@ -172,7 +157,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
         if (selectedIndex == correctButton) {
             long elapsed = System.currentTimeMillis() - questionStartMs;
-            int  points  = scoreCalculator.onCorrectAnswer(elapsed);
+            int points = scoreCalculator.onCorrectAnswer(elapsed);
             showPointsGained(points);
         } else {
             scoreCalculator.onWrongAnswer();
@@ -250,50 +235,8 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         Intent intent = new Intent(this, LeaderboardActivity.class);
         intent.putExtra("score_solo", scoreCalculator.getTotalScore());
         // En solo les autres joueurs ont 0
-        intent.putExtra("player_name", SOLO_PLAYER);
+        intent.putExtra("player_name", GameConfig.SOLO_PLAYER);
         startActivity(intent);
         finish();
     }
-
-    // -----------------------------------------------------------------
-    // Détection mouvement
-    // -----------------------------------------------------------------
-
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() != Sensor.TYPE_ACCELEROMETER) return;
-
-        float x = event.values[0];
-        float y = event.values[1];
-        float z = event.values[2];
-
-        if (!sensorInitialized) {
-            lastX = x; lastY = y; lastZ = z;
-            sensorInitialized = true;
-            return;
-        }
-        float delta = Math.abs(x - lastX) + Math.abs(y - lastY) + Math.abs(z - lastZ);
-        if (delta > SHAKE_THRESHOLD) {
-            // Retourne à GalleryActivity pour reroll
-            finish();
-        }
-
-        lastX = x; lastY = y; lastZ = z;
-    }
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        sensorManager.registerListener(this, accelerometer,
-                SensorManager.SENSOR_DELAY_NORMAL);
-    }
-    @Override
-    protected void onPause() {
-        super.onPause();
-        sensorManager.unregisterListener(this);
-        if (countDownTimer != null) countDownTimer.cancel();
-    }
-
 }

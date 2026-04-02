@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,13 +52,47 @@ public class ProfileOverlayFragment extends Fragment {
     private final ActivityResultLauncher<Uri> cameraLauncher =
             registerForActivityResult(new ActivityResultContracts.TakePicture(), success -> {
                 if (success && cameraUri != null) {
-                    String saved = savePhotoFromUri(cameraUri);
-                    if (saved != null) {
-                        currentPhotoPath = saved;
+
+                    File tempFile = new File(requireContext().getFilesDir() + "/profile/camera_temp.jpg");
+                    File finalFile = new File(requireContext().getFilesDir() + "/profile/profile_photo.jpg");
+
+                    if (tempFile.exists()) {
+                        tempFile.renameTo(finalFile); //attention a ce petit coquin
+                        currentPhotoPath = finalFile.getAbsolutePath();
                         loadPhoto(currentPhotoPath);
                     }
                 }
             });
+
+    private ActivityResultLauncher<String> cameraPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    openCamera();
+                } else {
+                    Toast.makeText(requireContext(), "Permission caméra refusée", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+    private void checkCameraAndOpen() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+            openCamera();
+        } else {
+            cameraPermissionLauncher.launch(Manifest.permission.CAMERA);
+        }
+    }
+
+    private void openCamera() {
+        File photoFile = createTempImageFile();
+        if (photoFile != null) {
+            cameraUri = FileProvider.getUriForFile(
+                    requireContext(),
+                    requireContext().getPackageName() + ".fileprovider",
+                    photoFile
+            );
+            cameraLauncher.launch(cameraUri);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,7 +109,7 @@ public class ProfileOverlayFragment extends Fragment {
         Button      btnCamera  = view.findViewById(R.id.btnCamera);
         Button      btnSave    = view.findViewById(R.id.btnSave);
 
-        // Pré-remplit si profil existant
+        // Remplit si un profil existe
         etUsername.setText(profileManager.getUsername());
         currentPhotoPath = profileManager.getPhotoPath();
         if (!currentPhotoPath.isEmpty()) {
@@ -87,14 +122,18 @@ public class ProfileOverlayFragment extends Fragment {
                 galleryLauncher.launch("image/*"));
 
         btnCamera.setOnClickListener(v -> {
+            checkCameraAndOpen();
+
+            /*
+            Log.d("UWU", "CRAAASH");
             File photoFile = createTempImageFile();
             if (photoFile != null) {
                 cameraUri = FileProvider.getUriForFile(
                         requireContext(),
                         requireContext().getPackageName() + ".fileprovider",
                         photoFile);
-                cameraLauncher.launch(cameraUri);
-            }
+                cameraLauncher.launch(cameraUri); //ICI
+            } */
         });
 
         btnSave.setOnClickListener(v -> {

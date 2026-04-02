@@ -1,4 +1,4 @@
-package com.rien_a_cacher.P2P;
+package com.rien_a_cacher.P2P.metier;
 
 import android.Manifest;
 import android.annotation.SuppressLint;

@@ -1,4 +1,4 @@
-package com.rien_a_cacher;
+package com.rien_a_cacher.game.metier;
 
 // Stocke les noms des joueurs pour les parties en solo
 // Pourra servir pour les règles de parties tel que le nombre de round modificable

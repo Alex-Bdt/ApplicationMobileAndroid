@@ -1,13 +1,18 @@
-package com.rien_a_cacher.P2P;
+package com.rien_a_cacher.P2P.metier;
 
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -18,6 +23,7 @@ public class ClientConnection {
     public interface ClientListener {
         void onPinAccepted();
         void onPinRejected();
+        void onPlayerListUpdated(List<PlayerInfo> players);
         void onGameStarted();
         void onError(String message);
     }
@@ -33,9 +39,16 @@ public class ClientConnection {
     private PrintWriter out;
     private Socket socket;
 
+    // Infos du joueur
+    private PlayerInfo playerInfo;
+
     public ClientConnection(String hostAddress, ClientListener listener) {
         this.hostAddress = hostAddress;
         this.listener = listener;
+    }
+
+    public void setPlayerInfo(PlayerInfo info) {
+        this.playerInfo = info;
     }
 
     public void connect() {
@@ -59,11 +72,19 @@ public class ClientConnection {
 
                     switch (msg.getType()) {
                         case GameMessage.TYPE_PIN_OK:
+                            sendPlayerInfo();
                             mainHandler.post(listener::onPinAccepted);
                             break;
+
                         case GameMessage.TYPE_PIN_FAIL:
                             mainHandler.post(listener::onPinRejected);
                             break;
+
+                        case GameMessage.TYPE_PLAYER_LIST:
+                            List<PlayerInfo> players = parsePlayerList(msg.getPayload());
+                            mainHandler.post(() -> listener.onPlayerListUpdated(players));
+                            break;
+
                         case GameMessage.TYPE_START:
                             mainHandler.post(listener::onGameStarted);
                             break;
@@ -83,16 +104,43 @@ public class ClientConnection {
         writeExecutor.execute(() -> {
             Log.d(TAG, "submitPin: out=" + out + " pin=" + pin);
             if (out != null) {
-                String msg = new GameMessage(GameMessage.TYPE_PIN_SUBMIT, pin).toJson();
-                Log.d(TAG, "submitPin: envoi=" + msg);
-                out.println(msg);
-                Log.d(TAG, "submitPin: envoyé ✅");
-            } else {
-                Log.e(TAG, "submitPin: out est NULL — socket pas encore ouverte");
-                mainHandler.post(() ->
-                        listener.onError("Connexion pas encore prête, réessayez"));
+                out.println(new GameMessage(GameMessage.TYPE_PIN_SUBMIT, pin).toJson());
+                Log.d(TAG, "submitPin: envoyé");
             }
         });
+    }
+
+    private void sendPlayerInfo() {
+        writeExecutor.execute(() -> {
+            try {
+                JSONObject json = new JSONObject();
+                json.put("name",  playerInfo != null ? playerInfo.name  : "Joueur");
+                json.put("photo", playerInfo != null ? playerInfo.photoPath : "");
+                out.println(new GameMessage(
+                        GameMessage.TYPE_PLAYER_INFO, json.toString()).toJson());
+                Log.d(TAG, "sendPlayerInfo envoyé");
+            } catch (Exception e) {
+                Log.e(TAG, "sendPlayerInfo erreur=" + e.getMessage());
+            }
+        });
+    }
+
+    private List<PlayerInfo> parsePlayerList(String payload) {
+        List<PlayerInfo> list = new ArrayList<>();
+        try {
+            JSONArray array = new JSONArray(payload);
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject o = array.getJSONObject(i);
+                list.add(new PlayerInfo(
+                        o.optString("name", "Joueur"),
+                        o.optString("photo", ""),
+                        o.optBoolean("isHost", false)
+                ));
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "parsePlayerList erreur=" + e.getMessage());
+        }
+        return list;
     }
 
     public void disconnect() {

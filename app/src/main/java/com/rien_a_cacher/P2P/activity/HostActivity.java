@@ -1,4 +1,4 @@
-package com.rien_a_cacher.P2P;
+package com.rien_a_cacher.P2P.activity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -14,7 +14,14 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.rien_a_cacher.P2P.metier.HostServer;
+import com.rien_a_cacher.P2P.metier.PlayerInfo;
+import com.rien_a_cacher.P2P.metier.WaitingRoomAdapter;
+import com.rien_a_cacher.P2P.metier.WifiDirectManager;
+import com.rien_a_cacher.profile.ProfileManager;
 import com.rien_a_cacher.R;
 
 import java.util.ArrayList;
@@ -27,13 +34,15 @@ public class HostActivity extends AppCompatActivity
     private static final String TAG = "WifiDirect";
 
     private TextView tvPin;
-    private TextView tvPlayers;
+    private RecyclerView rvPlayers;
     private TextView tvStatus;
     private Button btnStart;
 
     private WifiDirectManager wifiDirectManager;
     private HostServer hostServer;
-    private int playerCount = 0;
+    private WaitingRoomAdapter adapter;
+    private List<PlayerInfo>   playerList = new ArrayList<>();
+
     private String pin;
 
     private final ActivityResultLauncher<String[]> requestPermissionsLauncher =
@@ -53,23 +62,38 @@ public class HostActivity extends AppCompatActivity
         setContentView(R.layout.activity_host);
 
         tvPin     = findViewById(R.id.tvPin);
-        tvPlayers = findViewById(R.id.tvPlayers);
         tvStatus  = findViewById(R.id.tvStatus);
+        rvPlayers = findViewById(R.id.rvPlayers);
         btnStart  = findViewById(R.id.btnStart);
 
         pin = String.format("%04d", new Random().nextInt(10000));
         tvPin.setText(pin);
         tvStatus.setText("Création du groupe...");
 
+        // Récupère le profil du host
+        ProfileManager profileManager = new ProfileManager(this);
+        PlayerInfo hostInfo = new PlayerInfo(
+                profileManager.hasProfile() ? profileManager.getUsername() : "Host",
+                profileManager.getPhotoPath(),
+                true
+        );
+        playerList.add(hostInfo);
+
+        adapter = new WaitingRoomAdapter(playerList);
+        rvPlayers.setLayoutManager(new LinearLayoutManager(this));
+        rvPlayers.setAdapter(adapter);
+
         wifiDirectManager = new WifiDirectManager(this, this);
         wifiDirectManager.registerReceiver();
 
         hostServer = new HostServer(pin, this);
+        hostServer.setHostInfo(hostInfo);
         hostServer.start();
 
         btnStart.setOnClickListener(v -> {
-            if (playerCount == 0) {
-                Toast.makeText(this, "Aucun joueur connecté", Toast.LENGTH_SHORT).show();
+            if (playerList.size() < 2) {
+                Toast.makeText(this, "Aucun joueur connecté",
+                        Toast.LENGTH_SHORT).show();
                 return;
             }
             hostServer.broadcastStart();
@@ -81,21 +105,20 @@ public class HostActivity extends AppCompatActivity
 
     private void checkWifiPermissionsAndStart() {
         List<String> toRequest = new ArrayList<>();
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.NEARBY_WIFI_DEVICES)
-                    != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.NEARBY_WIFI_DEVICES)
+                    != PackageManager.PERMISSION_GRANTED)
                 toRequest.add(Manifest.permission.NEARBY_WIFI_DEVICES);
-            }
         } else {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED)
                 toRequest.add(Manifest.permission.ACCESS_FINE_LOCATION);
-            }
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED)
                 toRequest.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-            }
         }
 
         if (toRequest.isEmpty()) {
@@ -118,9 +141,10 @@ public class HostActivity extends AppCompatActivity
     public void onConnectionInfoAvailable(String hostAddress, boolean isGroupOwner) {
         Log.d(TAG, "Host onConnectionInfoAvailable isGroupOwner=" + isGroupOwner);
         if (isGroupOwner) {
-            tvStatus.setText("Groupe actif — en attente de joueurs");
+            tvStatus.setText("En attente de joueurs");
         }
     }
+
     @Override
     public void onError(String message) {
         Log.d(TAG, "onError: " + message);
@@ -129,10 +153,11 @@ public class HostActivity extends AppCompatActivity
 
     // HostServerListener
     @Override
-    public void onPlayerJoined(String playerName) {
-        playerCount++;
-        tvPlayers.setText("Joueurs connectés : " + playerCount);
-        Toast.makeText(this, playerName + " a rejoint la partie !", Toast.LENGTH_SHORT).show();
+    public void onPlayerJoined(PlayerInfo player) {
+        playerList.add(player);
+        adapter.notifyItemInserted(playerList.size() - 1);
+        Toast.makeText(this, player.name + " a rejoint !",
+                Toast.LENGTH_SHORT).show();
     }
 
     @Override

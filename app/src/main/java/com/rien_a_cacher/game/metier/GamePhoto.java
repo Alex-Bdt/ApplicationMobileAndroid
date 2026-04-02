@@ -1,4 +1,4 @@
-package com.rien_a_cacher;
+package com.rien_a_cacher.game.metier;
 
 import android.net.Uri;
 import java.io.Serializable;

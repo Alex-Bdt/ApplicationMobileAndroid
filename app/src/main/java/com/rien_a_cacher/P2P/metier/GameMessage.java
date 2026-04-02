@@ -1,4 +1,4 @@
-package com.rien_a_cacher.P2P;
+package com.rien_a_cacher.P2P.metier;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,13 +9,15 @@ public class GameMessage {
     public static final String TYPE_PIN_OK = "PIN_OK"; // Host → Client
     public static final String TYPE_PIN_FAIL = "PIN_FAIL"; // Host → Client
     public static final String TYPE_START = "START"; // Host → tous
+    public static final String TYPE_PLAYER_INFO = "PLAYER_INFO";
+    public static final String TYPE_PLAYER_LIST = "PLAYER_LIST";
 
     private final String type;
     private final String payload;
 
     public GameMessage(String type, String payload) {
         this.type=type;
-        this.payload=payload;
+        this.payload=payload!= null ? payload : "";
     }
 
     public String getType(){
@@ -30,7 +32,7 @@ public class GameMessage {
         try {
             JSONObject obj = new JSONObject();
             obj.put("type", type);
-            obj.put("payload", payload != null ? payload : "");
+            obj.put("payload", payload);
             return obj.toString();
         } catch (JSONException e) {
             return "{}";

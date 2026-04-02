@@ -1,8 +1,7 @@
-package com.rien_a_cacher;
+package com.rien_a_cacher.gallery;
 
 import java.util.List;
 
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,8 @@ import android.widget.ImageView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.rien_a_cacher.R;
+import com.rien_a_cacher.game.metier.GamePhoto;
 
 public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHolder> {
 

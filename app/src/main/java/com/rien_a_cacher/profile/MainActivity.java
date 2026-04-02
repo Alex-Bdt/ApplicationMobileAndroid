@@ -1,4 +1,4 @@
-package com.rien_a_cacher;
+package com.rien_a_cacher.profile;
 
 import android.Manifest;
 import android.content.Intent;
@@ -14,10 +14,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
-import com.rien_a_cacher.P2P.HostActivity;
-import com.rien_a_cacher.P2P.JoinActivity;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.rien_a_cacher.P2P.activity.HostActivity;
+import com.rien_a_cacher.P2P.activity.JoinActivity;
+import com.rien_a_cacher.R;
+import com.rien_a_cacher.gallery.GalleryActivity;
 
-public class MainActivity extends AppCompatActivity {
+import java.io.File;
+
+public class MainActivity extends AppCompatActivity
+        implements ProfileOverlayFragment.ProfileUpdateListener {
 
     private ImageButton btnProfile;
     private ProfileManager profileManager;
@@ -91,6 +97,22 @@ public class MainActivity extends AppCompatActivity {
     private void goToGallery() {
         Intent intent = new Intent(this, GalleryActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onProfileUpdated() {
+        // Rafraîchit le bouton profil dès la fermeture du fragment
+        String photoPath = profileManager.getPhotoPath();
+        if (!photoPath.isEmpty()) {
+            Glide.with(this)
+                    .load(new File(photoPath))
+                    .circleCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(btnProfile);
+        } else {
+            btnProfile.setImageResource(R.drawable.ic_profile_placeholder);
+        }
     }
 
 }

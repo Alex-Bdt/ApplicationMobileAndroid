@@ -1,4 +1,4 @@
-package com.rien_a_cacher;
+package com.rien_a_cacher.game.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.rien_a_cacher.gallery.GalleryActivity;
+import com.rien_a_cacher.R;
+import com.rien_a_cacher.game.metier.GameConfig;
 
 import java.util.ArrayList;
 import java.util.List;

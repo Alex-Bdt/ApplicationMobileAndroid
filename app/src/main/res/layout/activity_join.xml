@@ -4,65 +4,57 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="#121212"
-    android:padding="32dp">
+    android:background="@drawable/background_gradient">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Join a Game"
-        android:textSize="24sp"
+        android:text="@string/joinGame"
+        android:textSize="45sp"
         android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:layout_marginBottom="32dp" />
-
-
-
+        android:textColor="#fff"
+        android:layout_marginBottom="50sp" />
 
     <TextView
         android:id="@+id/tvStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Searching..."
+        android:text="@string/searching"
         android:textSize="15sp"
-        android:textColor="#AAAAAA"
+        android:textColor="#aaa"
         android:gravity="center"
-        android:layout_marginBottom="32dp" />
+        android:layout_marginBottom="32sp" />
 
     <Button
         android:id="@+id/btnConnect"
-        android:layout_width="220dp"
-        android:layout_height="56dp"
-        android:text="Login"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#03DAC5"
+        android:layout_width="220sp"
+        android:layout_height="56sp"
+        android:text="@string/login"
+        android:textColor="#fff"
+        android:backgroundTint="#000"
         android:enabled="false"
-        android:layout_marginBottom="32dp" />
-
-
-
+        android:layout_marginBottom="32sp" />
 
        <EditText
         android:id="@+id/etPin"
-        android:layout_width="180dp"
+        android:layout_width="220sp"
         android:layout_height="wrap_content"
-        android:hint=" tap da PIN"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#555555"
+        android:hint="@string/editPIN"
+        android:textColor="#fff"
+        android:textColorHint="#555"
         android:inputType="numberPassword"
         android:maxLength="4"
         android:gravity="center"
         android:textSize="32sp"
         android:enabled="false"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="50sp" />
 
     <Button
         android:id="@+id/btnSubmitPin"
-        android:layout_width="220dp"
-        android:layout_height="56dp"
-        android:text="Valid PIN"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#BB86FC"
+        android:layout_width="220sp"
+        android:layout_height="56sp"
+        android:text="@string/validPIN"
+        android:textColor="#fff"
+        android:backgroundTint="#000"
         android:enabled="false" />
-
 </LinearLayout>

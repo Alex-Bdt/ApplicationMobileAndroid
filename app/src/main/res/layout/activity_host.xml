@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="#121212"
+    android:background="@drawable/background_gradient"
     android:padding="32dp">
 
     <TextView
@@ -13,7 +13,7 @@
         android:text="Hosting Game"
         android:textSize="28sp"
         android:textStyle="bold"
-        android:textColor="#FFFFFF"
+        android:textColor="#fff"
         android:layout_marginBottom="32dp" />
 
     <TextView
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:text="Joueurs connectés : 0"
         android:textSize="16sp"
-        android:textColor="#FFFFFF"
+        android:textColor="#fff"
         android:layout_marginBottom="48dp" />
 
     <Button
@@ -40,7 +40,7 @@
         android:layout_width="220dp"
         android:layout_height="56dp"
         android:text="Lancer la partie"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#6200EE" />
+        android:textColor="#fff"
+        android:backgroundTint="#000" />
 
 </LinearLayout>

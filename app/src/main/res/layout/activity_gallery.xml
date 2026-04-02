@@ -2,14 +2,14 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121212">
+    android:background="@drawable/background_gradient">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:padding="4dp" />
+        android:padding="4sp" />
 
     <!-- Bouton relancer, flottant au dessus de la grille -->
     <Button
@@ -17,10 +17,10 @@
         android:layout_width="160dp"
         android:layout_height="48dp"
         android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="16dp"
-        android:text="Reroll"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#6200EE"
+        android:layout_marginBottom="16sp"
+        android:text="@string/reroll"
+        android:textColor="#fff"
+        android:backgroundTint="#000"
         android:elevation="6dp" />
 
     <!-- Affiché pendant le chargement, si chargement -->
@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Loading pics..."
-            android:textColor="#AAAAAA"
+            android:textColor="#aaa"
             android:textSize="14sp"
             android:layout_marginTop="12dp" />
 

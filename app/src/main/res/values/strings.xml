@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Rien_a_Cacher</string>
 
-    <!-- =============== Vue Acceuil =============== -->
+    <!-- =============== View Home =============== -->
     <string name="logo">Rien A Cacher ?</string>
     <string name="join">Join Game</string>
     <string name="create">Create Game</string>
@@ -10,15 +10,25 @@
     <string name="profile">Pro</string>
     <string name="questions">\?</string>
 
-    <!-- =============== Vue Profil =============== -->
+    <!-- =============== View Profil =============== -->
     <string name="textSetting">Settings</string>
     <string name="textLanguage">Language :</string>
     <string name="readMe">ReadMe</string>
     <string name="repo">Repo</string>
     <string name="back">Back</string>
 
-    <!-- =============== Vue Paramètres =============== -->
+    <!-- =============== View Settings =============== -->
     <string name="close">X</string>
     <string name="nameUser">Name :</string>
     <string name="save">SAVE</string>
+
+    <!-- =============== View Gallery =============== -->
+    <string name="reroll">Reroll</string>
+
+    <!-- =============== View Join Activity =============== -->
+    <string name="joinGame">Join a Game</string>
+    <string name="editPIN">Enter the PIN</string>
+    <string name="login">Login</string>
+    <string name="validPIN">Valid PIN</string>
+    <string name="searching">Searching...</string>
 </resources>

@@ -1,44 +1,21 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="108dp"
-    android:height="108dp"
-    android:viewportWidth="108"
-    android:viewportHeight="108">
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
 
-    <!-- Fond transparent (rien ici) -->
-
-    <!-- Voile stylisé (forme courbée approximative) -->
     <path
-        android:pathData="M30,25 Q40,15 55,20 Q70,30 75,55 Q70,80 45,85 Q30,75 30,25"
-        android:fillColor="#C8A2FF"
-        android:fillAlpha="0.75" />
+        android:pathData="M9,9c0,-1.66 1.34,-3 3,-3s3,1.34 3,3
+                          -1.5,2.5 -2.5,3.2c-0.7,0.5 -1,0.9 -1,1.8"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:fillColor="@android:color/transparent"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
 
-    <!-- Visage flouté simulé (cercle simple) -->
-    <circle
-        android:centerX="52"
-        android:centerY="55"
-        android:radius="18"
-        android:fillColor="#FF9EB3"
-        android:fillAlpha="0.6" />
-
-    <!-- Timer digital (boîte arrondie) -->
-    <rect
-        android:left="65"
-        android:top="48"
-        android:right="88"
-        android:bottom="68"
-        android:rx="4"
-        android:ry="4"
-        android:fillColor="#1E1E2E" />
-
-    <!-- Texte du timer "10" (approximation avec chemins simples - difficile pour du vrai texte) -->
-    <!-- Pour du vrai texte, il est préférable d'utiliser un LayerDrawable ou de garder le PNG -->
-
-    <!-- Point d'interrogation -->
     <path
-        android:pathData="M78,38 Q78,30 82,30 Q86,30 86,37 Q86,42 80,44 L80,48"
-        android:strokeColor="#A5F3FC"
-        android:strokeWidth="4"
-        android:fillColor="#00000000" />
-
-    <!-- Texte "Rien à Cacher" en bas (simulé, le vrai texte est mieux en PNG ou avec Canvas) -->
+        android:pathData="M11.6,17.4h0"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"/>
 </vector>

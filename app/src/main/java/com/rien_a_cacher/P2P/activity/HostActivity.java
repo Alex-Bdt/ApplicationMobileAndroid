@@ -41,7 +41,7 @@ public class HostActivity extends AppCompatActivity
     private WifiDirectManager wifiDirectManager;
     private HostServer hostServer;
     private WaitingRoomAdapter adapter;
-    private List<PlayerInfo>   playerList = new ArrayList<>();
+    private List<PlayerInfo> playerList = new ArrayList<>();
 
     private String pin;
 

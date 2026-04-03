@@ -145,7 +145,17 @@ public class WifiDirectManager {
     private void createGroupInternal() {
         if (!hasRequiredPermissions()) return;
 
+        // SSID et passphrase fixes → adresse MAC stable, pas de randomisation
+        WifiP2pConfig config = new WifiP2pConfig.Builder()
+                .setNetworkName(GROUP_SSID)
+                .setPassphrase(GROUP_PASSPHRASE)
+                .enablePersistentMode(true)
+                .build();
+
+        manager.createGroup(channel, config, new WifiP2pManager.ActionListener() {
+        /*
         manager.createGroup(channel, new WifiP2pManager.ActionListener() {
+        */
 
             @Override public void onSuccess() {
                 Log.d(TAG, "createGroup() onSuccess");
@@ -159,33 +169,6 @@ public class WifiDirectManager {
             }
         });
     }
-
-    /*
-    private void createGroupInternal() {
-        if (!hasRequiredPermissions()) return;
-
-        // SSID et passphrase fixes → adresse MAC stable, pas de randomisation
-        WifiP2pConfig config = new WifiP2pConfig.Builder()
-                .setNetworkName(GROUP_SSID)
-                .setPassphrase(GROUP_PASSPHRASE)
-                .enablePersistentMode(true)
-                .build();
-
-        manager.createGroup(channel, config, new WifiP2pManager.ActionListener() {
-
-            @Override public void onSuccess() {
-                Log.d(TAG, "createGroup() onSuccess");
-                // Vérifie l'état du groupe et notifie le listener
-                requestConnectionInfo();
-                // Démarre la découverte pour être visible
-                startDiscoveryInternal();
-            }
-            @Override public void onFailure(int reason) {
-                Log.d(TAG, "createGroup() onFailure reason=" + reason);
-                listener.onError("Échec création groupe : " + reason);
-            }
-        });
-    }*/
 
     // -------------------------------------------------------------------
     // CLIENT - découverte
@@ -274,24 +257,6 @@ public class WifiDirectManager {
             @Override public void onFailure(int reason) {
                 Log.d(TAG, "connect() onFailure reason=" + reason);
                 listener.onError("Échec connexion : " + reason);
-            }
-        });
-    }
-
-    @SuppressLint("MissingPermission")
-    private void retryConnect(WifiP2pDevice device) {
-        if (!hasRequiredPermissions()) return;
-
-        WifiP2pConfig config = new WifiP2pConfig();
-        config.deviceAddress = device.deviceAddress;
-
-        manager.connect(channel, config, new WifiP2pManager.ActionListener() {
-            @Override public void onSuccess() {
-                Log.d(TAG, "retryConnect() onSuccess");
-            }
-            @Override public void onFailure(int reason) {
-                Log.d(TAG, "retryConnect() onFailure reason=" + reason);
-                listener.onError("Impossible de se connecter (code " + reason + ")");
             }
         });
     }

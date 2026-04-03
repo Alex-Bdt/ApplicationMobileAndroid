@@ -8,16 +8,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.rien_a_cacher.game.metier.GameConfig;
 import com.rien_a_cacher.game.metier.GamePhoto;
 import com.rien_a_cacher.R;
 import com.rien_a_cacher.game.metier.ScoreCalculator;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +22,6 @@ import java.util.List;
 public class GameActivity extends AppCompatActivity {
 
     private static final int TIMER_SECONDS = 10;
-    private static final float SHAKE_THRESHOLD = 12f;
 
     private ImageView ivPhoto;
     private TextView tvTimer;
@@ -116,8 +112,6 @@ public class GameActivity extends AppCompatActivity {
             buttons[i].setText(choices.get(i));
         }
 
-        //tvScore.setText("Score : " + score + " / " + photos.size());
-
         questionStartMs = System.currentTimeMillis();
         startTimer();
     }
@@ -182,8 +176,7 @@ public class GameActivity extends AppCompatActivity {
         if (combo >= 2) {
             float mult = scoreCalculator.getMultiplier();
             tvCombo.setVisibility(View.VISIBLE);
-            tvCombo.setText("🔥 ×" + String.format("%.1f", mult) //🔥
-                    + "  combo " + combo);
+            tvCombo.setText("🔥 ×" + String.format("%.1f", mult) + "  combo " + combo); //🔥
         } else {
             tvCombo.setVisibility(View.INVISIBLE);
         }

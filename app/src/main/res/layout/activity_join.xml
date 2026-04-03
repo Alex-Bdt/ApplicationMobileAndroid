@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/background_gradient">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/joinGame"
+        android:textSize="45sp"
+        android:textStyle="bold"
+        android:textColor="#fff"
+        android:layout_marginBottom="50sp" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/searching"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:layout_marginBottom="32sp" />
+
+    <!-- Liste des salles trouvées -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvRooms"
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="1"
+        android:layout_marginBottom="24sp" />
+
+    <!-- Section PIN -->
+    <LinearLayout
+        android:id="@+id/pinLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+    <Button
+        android:id="@+id/btnConnect"
+        android:layout_width="220sp"
+        android:layout_height="56sp"
+        android:text="@string/login"
+        android:textColor="#fff"
+        android:backgroundTint="#000"
+        android:enabled="false"
+        android:layout_marginBottom="32sp" />
+
+       <EditText
+        android:id="@+id/etPin"
+        android:layout_width="220sp"
+        android:layout_height="wrap_content"
+        android:hint="@string/editPIN"
+        android:textColor="#fff"
+        android:textColorHint="#555"
+        android:inputType="numberPassword"
+        android:maxLength="4"
+        android:gravity="center"
+        android:textSize="32sp"
+        android:enabled="false"
+        android:layout_marginBottom="50sp" />
+
+        <Button
+            android:id="@+id/btnSubmitPin"
+            android:layout_width="200dp"
+            android:layout_height="52dp"
+            android:text="@string/validPIN"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#BB86FC" />
+
+    </LinearLayout>
+
+    <!-- Salle d'attente :visible après PIN validé -->
+    <LinearLayout
+        android:id="@+id/waitingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/playersInRoom"
+            android:textSize="14sp"
+            android:textColor="#AAAAAA"
+            android:layout_marginBottom="8sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvWaitingPlayers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/waitingHost"
+            android:textSize="13sp"
+            android:textColor="#AAAAAA"
+            android:gravity="center"
+            android:layout_marginTop="16sp" />
+    </LinearLayout>
+</LinearLayout>

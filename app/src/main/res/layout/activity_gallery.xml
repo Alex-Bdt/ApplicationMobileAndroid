@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:padding="4sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:padding="16sp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btnReload"
+            android:layout_width="0sp"
+            android:layout_height="48sp"
+            android:layout_weight="1"
+            android:layout_marginEnd="8sp"
+            android:text="@string/reroll"
+            android:textColor="#fff"
+            android:backgroundTint="#000"
+            android:elevation="6sp" />
+
+        <Button
+            android:id="@+id/btnValidate"
+            android:layout_width="0sp"
+            android:layout_height="48sp"
+            android:layout_weight="1"
+            android:layout_marginStart="8sp"
+            android:text="@string/valid"
+            android:textColor="#fff"
+            android:backgroundTint="#000"
+            android:elevation="6sp" />
+    </LinearLayout>
+
+    <!-- Affiché pendant le chargement, si chargement -->
+    <LinearLayout
+        android:id="@+id/loadingLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="48sp"
+            android:layout_height="48sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/searching"
+            android:textColor="#aaa"
+            android:textSize="14sp"
+            android:layout_marginTop="12sp" />
+    </LinearLayout>
+</FrameLayout>

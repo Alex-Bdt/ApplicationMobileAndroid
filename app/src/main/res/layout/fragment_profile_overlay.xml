@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="32dp">
+
+        <ImageButton
+            android:id="@+id/btnClose"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:tint="#FFFFFF"
+            android:layout_marginBottom="32dp" />
+
+        <!-- Photo de profil -->
+        <ImageView
+            android:id="@+id/ivProfilePhoto"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:src="@drawable/ic_profile_placeholder"
+            android:scaleType="centerCrop"
+            android:background="@drawable/circle_background"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Boutons choix photo -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="32dp">
+
+            <Button
+                android:id="@+id/btnGallery"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Galerie"
+                android:textSize="13sp"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#000"
+                android:layout_marginEnd="12dp" />
+
+            <Button
+                android:id="@+id/btnCamera"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Appareil photo"
+                android:textSize="13sp"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#000" />
+
+        </LinearLayout>
+
+        <!-- Pseudo -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Pseudo"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginBottom="48dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:inputType="textPersonName"
+                android:maxLength="20" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Enregistrer -->
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="220dp"
+            android:layout_height="56dp"
+            android:text="Enregistrer"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#000" />
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -2,7 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EE121212">
+    android:background="@drawable/background_gradient"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,7 +46,7 @@
                 android:text="Galerie"
                 android:textSize="13sp"
                 android:textColor="#FFFFFF"
-                android:backgroundTint="#333333"
+                android:backgroundTint="#000"
                 android:layout_marginEnd="12dp" />
 
             <Button
@@ -55,7 +56,7 @@
                 android:text="Appareil photo"
                 android:textSize="13sp"
                 android:textColor="#FFFFFF"
-                android:backgroundTint="#333333" />
+                android:backgroundTint="#000" />
 
         </LinearLayout>
 
@@ -84,7 +85,7 @@
             android:layout_height="56dp"
             android:text="Enregistrer"
             android:textColor="#FFFFFF"
-            android:backgroundTint="#6200EE" />
+            android:backgroundTint="#000" />
 
     </LinearLayout>
 

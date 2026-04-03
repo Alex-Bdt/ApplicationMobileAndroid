@@ -18,7 +18,7 @@
     <!-- =============== View Gallery =============== -->
     <string name="reroll">Reroll</string>
     <string name="searching">Searching...</string>
-    <string name="valid">Valider\n</string>
+    <string name="valid">Valider</string>
 
     <!-- =============== View Join Activity =============== -->
     <string name="joinGame">Join a Game</string>

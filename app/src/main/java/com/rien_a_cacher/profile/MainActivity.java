@@ -3,8 +3,10 @@ package com.rien_a_cacher.profile;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity
 
     private ImageButton btnProfile;
     private ProfileManager profileManager;
+    private Button btnGitHub;
 
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
@@ -41,6 +44,14 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        btnGitHub = findViewById(R.id.btnGitHub);
+
+        btnGitHub.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://github.com/Alex-Bdt/ApplicationMobileAndroid"));
+            startActivity(intent);
+        });
 
         profileManager = new ProfileManager(this);
         btnProfile = findViewById(R.id.btnProfile);

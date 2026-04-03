@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
     android:background="@drawable/background_gradient"
-    android:padding="32dp">
+    android:padding="32sp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hosting Game"
+        android:text="@string/create"
         android:textSize="28sp"
         android:textStyle="bold"
         android:textColor="#fff"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="8sp" />
 
     <TextView
         android:id="@+id/tvStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Initialisation..."
+        android:text="@string/init"
         android:textSize="13sp"
-        android:textColor="#AAAAAA"
-        android:layout_marginBottom="32dp" />
+        android:textColor="#aaa"
+        android:layout_marginBottom="32sp" />
 
 
     <LinearLayout
@@ -31,14 +32,14 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginBottom="24dp">
+        android:layout_marginBottom="24sp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PIN : "
+            android:text="@string/pin2"
             android:textSize="16sp"
-            android:textColor="#AAAAAA" />
+            android:textColor="#aaa" />
 
         <TextView
             android:id="@+id/tvPin"
@@ -46,31 +47,30 @@
             android:layout_height="wrap_content"
             android:textSize="36sp"
             android:textStyle="bold"
-            android:textColor="#03DAC5"
+            android:textColor="#BA3406"
             android:letterSpacing="0.3" />
-
     </LinearLayout>
 
     <!-- Liste joueurs -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Joueurs dans la salle"
+        android:text="@string/playersInRoom"
         android:textSize="14sp"
-        android:textColor="#AAAAAA"
-        android:layout_marginBottom="8dp" />
+        android:textColor="#aaa"
+        android:layout_marginBottom="8sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvPlayers"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="0sp"
         android:layout_weight="1"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16sp" />
 
     <Button
         android:id="@+id/btnStart"
-        android:layout_width="220dp"
-        android:layout_height="56dp"
+        android:layout_width="220sp"
+        android:layout_height="56sp"
         android:text="Lancer la partie"
         android:textColor="#fff"
         android:backgroundTint="#000" />

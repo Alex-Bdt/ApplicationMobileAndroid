@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#121212"
-    android:padding="32dp">
+    android:background="@drawable/background_gradient"
+    android:padding="32sp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Classement"
+        android:text="@string/ranking"
         android:textSize="28sp"
         android:textStyle="bold"
         android:textColor="#FFFFFF"
-        android:layout_marginBottom="32dp" />
+        android:layout_marginBottom="32sp" />
 
     <!-- Rempli dynamiquement -->
     <LinearLayout
         android:id="@+id/leaderboardContainer"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="0sp"
         android:layout_weight="1"
         android:orientation="vertical" />
 
     <Button
         android:id="@+id/btnReplay"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:text="Rejouer"
+        android:layout_height="56sp"
+        android:text="@string/retry"
         android:textColor="#FFFFFF"
-        android:backgroundTint="#6200EE"
-        android:layout_marginTop="24dp" />
-
+        android:backgroundTint="#000"
+        android:layout_marginTop="24sp" />
 </LinearLayout>

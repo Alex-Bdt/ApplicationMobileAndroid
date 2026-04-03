@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -28,9 +29,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRooms"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="0sp"
         android:layout_weight="1"
-        android:layout_marginBottom="24dp" />
+        android:layout_marginBottom="24sp" />
 
     <!-- Section PIN -->
     <LinearLayout
@@ -69,7 +70,7 @@
             android:id="@+id/btnSubmitPin"
             android:layout_width="200dp"
             android:layout_height="52dp"
-            android:text="Valider le PIN"
+            android:text="@string/validPIN"
             android:textColor="#FFFFFF"
             android:backgroundTint="#BB86FC" />
 
@@ -86,10 +87,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Joueurs dans la salle"
+            android:text="@string/playersInRoom"
             android:textSize="14sp"
             android:textColor="#AAAAAA"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="8sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvWaitingPlayers"
@@ -99,12 +100,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="En attente du lancement par le host..."
+            android:text="@string/waitingHost"
             android:textSize="13sp"
             android:textColor="#AAAAAA"
             android:gravity="center"
-            android:layout_marginTop="16dp" />
-
+            android:layout_marginTop="16sp" />
     </LinearLayout>
-
 </LinearLayout>

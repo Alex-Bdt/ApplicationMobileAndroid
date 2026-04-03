@@ -15,18 +15,31 @@
     <string name="repo">Repo</string>
     <string name="back">Back</string>
 
-    <!-- =============== View Settings =============== -->
-    <string name="close">X</string>
-    <string name="nameUser">Name :</string>
-    <string name="save">SAVE</string>
-
     <!-- =============== View Gallery =============== -->
     <string name="reroll">Reroll</string>
+    <string name="searching">Searching...</string>
+    <string name="valid">Valider\n</string>
 
     <!-- =============== View Join Activity =============== -->
     <string name="joinGame">Join a Game</string>
     <string name="editPIN">Enter the PIN</string>
     <string name="login">Login</string>
     <string name="validPIN">Valid PIN</string>
-    <string name="searching">Searching...</string>
+    <string name="waitingHost">En attente du lancement par le host...</string>
+
+    <!-- =============== View Game Activity =============== -->
+    <string name="nextImage">Image suivante →</string>
+
+    <!-- =============== View Create Activity =============== -->
+    <string name="init">Initialisation...</string>
+    <string name="pin2">"PIN : "</string>
+    <string name="playersInRoom">Joueurs dans la salle</string>
+
+    <!-- =============== View Ranking Activity =============== -->
+    <string name="ranking">Classement</string>
+
+    <!-- =============== View Final Activity =============== -->
+    <string name="finishGame">Partie terminée !</string>
+    <string name="finalScore">Score final</string>
+    <string name="retry">Rejouer</string>
 </resources>

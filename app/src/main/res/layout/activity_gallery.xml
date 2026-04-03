@@ -16,30 +16,30 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:orientation="horizontal"
-        android:padding="16dp"
+        android:padding="16sp"
         android:gravity="center">
 
         <Button
             android:id="@+id/btnReload"
-            android:layout_width="160dp"
-            android:layout_height="48dp"
+            android:layout_width="160sp"
+            android:layout_height="48sp"
             android:layout_gravity="bottom|center_horizontal"
             android:layout_marginBottom="16sp"
             android:text="@string/reroll"
             android:textColor="#fff"
             android:backgroundTint="#000"
-            android:elevation="6dp" />
+            android:elevation="6sp" />
 
         <Button
             android:id="@+id/btnValidate"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_width="0sp"
+            android:layout_height="48sp"
             android:layout_weight="1"
-            android:layout_marginStart="8dp"
-            android:text="Valider"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#6200EE"
-            android:elevation="6dp" />
+            android:layout_marginStart="8sp"
+            android:text="@string/valid"
+            android:textColor="#fff"
+            android:backgroundTint="#000"
+            android:elevation="6sp" />
     </LinearLayout>
 
     <!-- Affiché pendant le chargement, si chargement -->
@@ -54,15 +54,15 @@
 
         <ProgressBar
             android:id="@+id/progressBar"
-            android:layout_width="48dp"
-            android:layout_height="48dp" />
+            android:layout_width="48sp"
+            android:layout_height="48sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Loading pics..."
+            android:text="@string/login"
             android:textColor="#aaa"
             android:textSize="14sp"
-            android:layout_marginTop="12dp" />
+            android:layout_marginTop="12sp" />
     </LinearLayout>
 </FrameLayout>

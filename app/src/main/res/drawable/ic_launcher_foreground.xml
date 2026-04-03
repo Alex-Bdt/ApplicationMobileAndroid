@@ -1,30 +1,44 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <path android:pathData="M31,63.928c0,0 6.4,-11 12.1,-13.1c7.2,-2.6 26,-1.4 26,-1.4l38.1,38.1L107,108.928l-32,-1L31,63.928z">
-        <aapt:attr name="android:fillColor">
-            <gradient
-                android:endX="85.84757"
-                android:endY="92.4963"
-                android:startX="42.9492"
-                android:startY="49.59793"
-                android:type="linear">
-                <item
-                    android:color="#44000000"
-                    android:offset="0.0" />
-                <item
-                    android:color="#00000000"
-                    android:offset="1.0" />
-            </gradient>
-        </aapt:attr>
-    </path>
+
+    <!-- Fond transparent (rien ici) -->
+
+    <!-- Voile stylisé (forme courbée approximative) -->
     <path
-        android:fillColor="#FFFFFF"
-        android:fillType="nonZero"
-        android:pathData="M65.3,45.828l3.8,-6.6c0.2,-0.4 0.1,-0.9 -0.3,-1.1c-0.4,-0.2 -0.9,-0.1 -1.1,0.3l-3.9,6.7c-6.3,-2.8 -13.4,-2.8 -19.7,0l-3.9,-6.7c-0.2,-0.4 -0.7,-0.5 -1.1,-0.3C38.8,38.328 38.7,38.828 38.9,39.228l3.8,6.6C36.2,49.428 31.7,56.028 31,63.928h46C76.3,56.028 71.8,49.428 65.3,45.828zM43.4,57.328c-0.8,0 -1.5,-0.5 -1.8,-1.2c-0.3,-0.7 -0.1,-1.5 0.4,-2.1c0.5,-0.5 1.4,-0.7 2.1,-0.4c0.7,0.3 1.2,1 1.2,1.8C45.3,56.528 44.5,57.328 43.4,57.328L43.4,57.328zM64.6,57.328c-0.8,0 -1.5,-0.5 -1.8,-1.2s-0.1,-1.5 0.4,-2.1c0.5,-0.5 1.4,-0.7 2.1,-0.4c0.7,0.3 1.2,1 1.2,1.8C66.5,56.528 65.6,57.328 64.6,57.328L64.6,57.328z"
-        android:strokeWidth="1"
-        android:strokeColor="#00000000" />
+        android:pathData="M30,25 Q40,15 55,20 Q70,30 75,55 Q70,80 45,85 Q30,75 30,25"
+        android:fillColor="#C8A2FF"
+        android:fillAlpha="0.75" />
+
+    <!-- Visage flouté simulé (cercle simple) -->
+    <circle
+        android:centerX="52"
+        android:centerY="55"
+        android:radius="18"
+        android:fillColor="#FF9EB3"
+        android:fillAlpha="0.6" />
+
+    <!-- Timer digital (boîte arrondie) -->
+    <rect
+        android:left="65"
+        android:top="48"
+        android:right="88"
+        android:bottom="68"
+        android:rx="4"
+        android:ry="4"
+        android:fillColor="#1E1E2E" />
+
+    <!-- Texte du timer "10" (approximation avec chemins simples - difficile pour du vrai texte) -->
+    <!-- Pour du vrai texte, il est préférable d'utiliser un LayerDrawable ou de garder le PNG -->
+
+    <!-- Point d'interrogation -->
+    <path
+        android:pathData="M78,38 Q78,30 82,30 Q86,30 86,37 Q86,42 80,44 L80,48"
+        android:strokeColor="#A5F3FC"
+        android:strokeWidth="4"
+        android:fillColor="#00000000" />
+
+    <!-- Texte "Rien à Cacher" en bas (simulé, le vrai texte est mieux en PNG ou avec Canvas) -->
 </vector>

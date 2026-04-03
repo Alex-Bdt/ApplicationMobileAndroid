@@ -5,13 +5,10 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.rien_a_cacher.gallery.GalleryActivity;
 import com.rien_a_cacher.R;
 import com.rien_a_cacher.game.metier.GameConfig;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +20,6 @@ public class LeaderboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_leaderboard);
 
         int    soloScore  = getIntent().getIntExtra("score_solo", 0);
-        String playerName = getIntent().getStringExtra("player_name");
 
         // En solo : joueur réel + 3 joueurs fictifs à 0
         List<PlayerScore> scores = new ArrayList<>();
@@ -49,7 +45,7 @@ public class LeaderboardActivity extends AppCompatActivity {
     }
 
     private void buildLeaderboard(LinearLayout container, List<PlayerScore> scores) {
-        String[] medals = {"🥇", "🥈", "🥉", "4."}; // basé pour 4
+        String[] medals = {"🥇", "🥈", "🥉", "4."}; // basé pour 4 !
 
         for (int i = 0; i < scores.size(); i++) {
             PlayerScore ps = scores.get(i);

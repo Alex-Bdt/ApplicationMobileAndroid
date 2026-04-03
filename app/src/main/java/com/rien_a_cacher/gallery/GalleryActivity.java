@@ -16,15 +16,12 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.rien_a_cacher.R;
 import com.rien_a_cacher.game.activity.GameActivity;
 import com.rien_a_cacher.game.metier.GamePhoto;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;

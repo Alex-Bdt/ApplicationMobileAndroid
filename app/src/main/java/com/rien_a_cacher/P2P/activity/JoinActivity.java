@@ -12,14 +12,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.rien_a_cacher.P2P.metier.ClientConnection;
 import com.rien_a_cacher.P2P.metier.PlayerInfo;
 import com.rien_a_cacher.P2P.metier.RoomAdapter;
@@ -27,7 +25,6 @@ import com.rien_a_cacher.P2P.metier.WaitingRoomAdapter;
 import com.rien_a_cacher.P2P.metier.WifiDirectManager;
 import com.rien_a_cacher.profile.ProfileManager;
 import com.rien_a_cacher.R;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,12 +64,12 @@ public class JoinActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
 
-        tvStatus     = findViewById(R.id.tvStatus);
-        rvRooms      = findViewById(R.id.rvRooms);
-        pinLayout    = findViewById(R.id.pinLayout);
-        waitingLayout   = findViewById(R.id.waitingLayout);
-        etPin        = findViewById(R.id.etPin);
-        btnSubmitPin = findViewById(R.id.btnSubmitPin);
+        tvStatus      = findViewById(R.id.tvStatus);
+        rvRooms       = findViewById(R.id.rvRooms);
+        pinLayout     = findViewById(R.id.pinLayout);
+        waitingLayout = findViewById(R.id.waitingLayout);
+        etPin         = findViewById(R.id.etPin);
+        btnSubmitPin  = findViewById(R.id.btnSubmitPin);
         rvWaitingPlayers = findViewById(R.id.rvWaitingPlayers);
 
         // Setup RecyclerView des salles

@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.rien_a_cacher.R;
-
 import java.io.File;
 import java.util.List;
 

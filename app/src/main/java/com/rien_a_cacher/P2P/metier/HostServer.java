@@ -2,10 +2,8 @@ package com.rien_a_cacher.P2P.metier;
 
 import android.os.Handler;
 import android.os.Looper;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.PrintWriter;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

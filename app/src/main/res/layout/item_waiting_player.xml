@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="12dp"
+    android:layout_marginBottom="4dp"
+    android:background="#1E1E1E">
+
+    <!-- Avatar -->
+    <ImageView
+        android:id="@+id/ivAvatar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_profile_placeholder"
+        android:scaleType="centerCrop"
+        android:background="@drawable/circle_background"
+        android:layout_marginEnd="16dp" />
+
+    <!-- Nom -->
+    <TextView
+        android:id="@+id/tvPlayerName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="16sp"
+        android:textColor="#FFFFFF" />
+
+    <!-- Badge host -->
+    <TextView
+        android:id="@+id/tvHostBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HOST"
+        android:textSize="11sp"
+        android:textColor="#03DAC5"
+        android:background="#1A03DAC5"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:visibility="gone" />
+
+</LinearLayout>

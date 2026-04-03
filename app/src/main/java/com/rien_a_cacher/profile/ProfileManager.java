@@ -1,4 +1,4 @@
-package com.rien_a_cacher;
+package com.rien_a_cacher.profile;
 
 import android.content.Context;
 import android.content.SharedPreferences;

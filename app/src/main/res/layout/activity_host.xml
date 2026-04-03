@@ -25,24 +25,47 @@
         android:textColor="#AAAAAA"
         android:layout_marginBottom="32dp" />
 
-    <TextView
-        android:id="@+id/tvPin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="64sp"
-        android:textStyle="bold"
-        android:textColor="#03DAC5"
-        android:letterSpacing="0.3"
-        android:layout_marginBottom="48dp" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PIN : "
+            android:textSize="16sp"
+            android:textColor="#AAAAAA" />
+
+        <TextView
+            android:id="@+id/tvPin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            android:textColor="#03DAC5"
+            android:letterSpacing="0.3" />
+
+    </LinearLayout>
+
+    <!-- Liste joueurs -->
     <TextView
-        android:id="@+id/tvPlayers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Joueurs connectés : 0"
-        android:textSize="16sp"
-        android:textColor="#fff"
-        android:layout_marginBottom="48dp" />
+        android:text="Joueurs dans la salle"
+        android:textSize="14sp"
+        android:textColor="#AAAAAA"
+        android:layout_marginBottom="8dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPlayers"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="16dp" />
 
     <Button
         android:id="@+id/btnStart"
@@ -51,5 +74,4 @@
         android:text="Lancer la partie"
         android:textColor="#fff"
         android:backgroundTint="#000" />
-
 </LinearLayout>

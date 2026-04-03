@@ -1,4 +1,4 @@
-package com.rien_a_cacher.P2P;
+package com.rien_a_cacher.P2P.activity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -20,6 +20,12 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.rien_a_cacher.P2P.metier.ClientConnection;
+import com.rien_a_cacher.P2P.metier.PlayerInfo;
+import com.rien_a_cacher.P2P.metier.RoomAdapter;
+import com.rien_a_cacher.P2P.metier.WaitingRoomAdapter;
+import com.rien_a_cacher.P2P.metier.WifiDirectManager;
+import com.rien_a_cacher.profile.ProfileManager;
 import com.rien_a_cacher.R;
 
 import java.util.ArrayList;
@@ -33,14 +39,17 @@ public class JoinActivity extends AppCompatActivity
     private TextView tvStatus;
     private RecyclerView rvRooms;
     private LinearLayout pinLayout;
+    private LinearLayout waitingLayout;
     private EditText etPin;
     private Button btnSubmitPin;
+    private RecyclerView rvWaitingPlayers;
 
     private WifiDirectManager wifiDirectManager;
     private ClientConnection clientConnection;
     private RoomAdapter roomAdapter;
+    private WaitingRoomAdapter waitingAdapter;
     private List<WifiP2pDevice> discoveredDevices = new ArrayList<>();
-
+    private List<PlayerInfo> waitingPlayers = new ArrayList<>();
 
     private final ActivityResultLauncher<String[]> requestPermissionsLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
@@ -61,8 +70,10 @@ public class JoinActivity extends AppCompatActivity
         tvStatus     = findViewById(R.id.tvStatus);
         rvRooms      = findViewById(R.id.rvRooms);
         pinLayout    = findViewById(R.id.pinLayout);
+        waitingLayout   = findViewById(R.id.waitingLayout);
         etPin        = findViewById(R.id.etPin);
         btnSubmitPin = findViewById(R.id.btnSubmitPin);
+        rvWaitingPlayers = findViewById(R.id.rvWaitingPlayers);
 
         // Setup RecyclerView des salles
         roomAdapter = new RoomAdapter(discoveredDevices, device -> {
@@ -75,12 +86,15 @@ public class JoinActivity extends AppCompatActivity
         rvRooms.setLayoutManager(new LinearLayoutManager(this));
         rvRooms.setAdapter(roomAdapter);
 
+        // Adapter salle d'attente
+        waitingAdapter = new WaitingRoomAdapter(waitingPlayers);
+        rvWaitingPlayers.setLayoutManager(new LinearLayoutManager(this));
+        rvWaitingPlayers.setAdapter(waitingAdapter);
+
         // Soumission du PIN
         btnSubmitPin.setOnClickListener(v -> {
-            Log.d(TAG, "btnSubmitPin cliqué !");
             String pinInput = etPin.getText().toString().trim();
             Log.d(TAG, "pinInput=" + pinInput + " length=" + pinInput.length());
-            Log.d(TAG, "clientConnection=" + clientConnection);
 
             if (pinInput.length() != 4) {
                 Toast.makeText(this, "Le PIN doit contenir 4 chiffres", Toast.LENGTH_SHORT).show();
@@ -150,9 +164,17 @@ public class JoinActivity extends AppCompatActivity
         wifiDirectManager.stopConnectionPolling();
         tvStatus.setText("Connecté ! Saisissez le PIN");
         pinLayout.setVisibility(View.VISIBLE);
-        Log.d(TAG, "pinLayout visibility=" + pinLayout.getVisibility()); // doit être 0
-        Log.d(TAG, "btnSubmitPin visibility=" + btnSubmitPin.getVisibility()); // doit être 0
+
+        // Passe les infos du profil à la connexion
+        ProfileManager profileManager = new ProfileManager(this);
+        PlayerInfo myInfo = new PlayerInfo(
+                profileManager.hasProfile() ? profileManager.getUsername() : "Joueur",
+                profileManager.getPhotoPath(),
+                false
+        );
+
         clientConnection = new ClientConnection(hostAddress, this);
+        clientConnection.setPlayerInfo(myInfo);
         clientConnection.connect();
     }
 
@@ -166,8 +188,9 @@ public class JoinActivity extends AppCompatActivity
     @Override
     public void onPinAccepted() {
         tvStatus.setText("PIN accepté ! En attente du lancement...");
+        pinLayout.setVisibility(View.GONE);
+        waitingLayout.setVisibility(View.VISIBLE);
         etPin.setEnabled(false);
-        btnSubmitPin.setEnabled(false);
     }
 
     @Override
@@ -175,6 +198,13 @@ public class JoinActivity extends AppCompatActivity
         tvStatus.setText("PIN incorrect, réessayez");
         etPin.setText("");
         btnSubmitPin.setEnabled(true);
+    }
+
+    @Override
+    public void onPlayerListUpdated(List<PlayerInfo> players) {
+        waitingPlayers.clear();
+        waitingPlayers.addAll(players);
+        waitingAdapter.notifyDataSetChanged();
     }
 
     @Override

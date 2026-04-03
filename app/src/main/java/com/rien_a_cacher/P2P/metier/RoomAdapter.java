@@ -1,4 +1,4 @@
-package com.rien_a_cacher.P2P;
+package com.rien_a_cacher.P2P.metier;
 
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.view.LayoutInflater;

@@ -32,14 +32,14 @@
         android:layout_weight="1"
         android:layout_marginBottom="24dp" />
 
-    <!-- Section PIN — cachée jusqu'à connexion P2P établie -->
+    <!-- Section PIN -->
     <LinearLayout
         android:id="@+id/pinLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_marginBottom="32sp" />
+        android:visibility="gone">
 
     <Button
         android:id="@+id/btnConnect"
@@ -65,12 +65,46 @@
         android:enabled="false"
         android:layout_marginBottom="50sp" />
 
-    <Button
-        android:id="@+id/btnSubmitPin"
-        android:layout_width="220sp"
-        android:layout_height="56sp"
-        android:text="@string/validPIN"
-        android:textColor="#fff"
-        android:backgroundTint="#000"
-        android:enabled="false" />
+        <Button
+            android:id="@+id/btnSubmitPin"
+            android:layout_width="200dp"
+            android:layout_height="52dp"
+            android:text="Valider le PIN"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#BB86FC" />
+
+    </LinearLayout>
+
+    <!-- Salle d'attente :visible après PIN validé -->
+    <LinearLayout
+        android:id="@+id/waitingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Joueurs dans la salle"
+            android:textSize="14sp"
+            android:textColor="#AAAAAA"
+            android:layout_marginBottom="8dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvWaitingPlayers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="En attente du lancement par le host..."
+            android:textSize="13sp"
+            android:textColor="#AAAAAA"
+            android:gravity="center"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+
 </LinearLayout>

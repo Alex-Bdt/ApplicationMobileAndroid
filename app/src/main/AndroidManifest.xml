@@ -29,7 +29,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Rien_a_Cacher">
         <activity
-            android:name=".MainActivity"
+            android:name=".profile.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,11 +37,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GalleryActivity"/>
-        <activity android:name=".P2P.HostActivity" />
-        <activity android:name=".P2P.JoinActivity" />
-        <activity android:name=".GameActivity" />
-        <activity android:name=".LeaderboardActivity" />
+        <activity android:name=".gallery.GalleryActivity"/>
+        <activity android:name=".P2P.activity.HostActivity" />
+        <activity android:name=".P2P.activity.JoinActivity" />
+        <activity android:name=".game.activity.GameActivity" />
+        <activity android:name=".game.activity.LeaderboardActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

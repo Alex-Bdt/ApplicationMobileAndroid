@@ -1,4 +1,4 @@
-package com.rien_a_cacher;
+package com.rien_a_cacher.game.metier;
 
 public class ScoreCalculator {
 

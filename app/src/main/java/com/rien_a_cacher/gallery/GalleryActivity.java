@@ -1,4 +1,4 @@
-package com.rien_a_cacher;
+package com.rien_a_cacher.gallery;
 
 import android.content.ContentUris;
 import android.content.Context;
@@ -21,7 +21,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
+import com.rien_a_cacher.R;
+import com.rien_a_cacher.game.activity.GameActivity;
+import com.rien_a_cacher.game.metier.GamePhoto;
 
 import java.io.File;
 import java.io.FileOutputStream;

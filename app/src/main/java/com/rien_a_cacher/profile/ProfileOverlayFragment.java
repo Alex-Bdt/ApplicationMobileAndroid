@@ -55,25 +55,19 @@ public class ProfileOverlayFragment extends Fragment {
     private final ActivityResultLauncher<Uri> cameraLauncher =
             registerForActivityResult(new ActivityResultContracts.TakePicture(),
                     success -> {
-                        if (success) {
+                        if (success && cameraFile != null && cameraFile.exists()) {
                             File dest = getProfilePhotoFile();
-                            if (cameraFile != null && cameraFile.exists()) {
-                                // Supprime l'ancien fichier avant de renommer
-                                if (dest.exists()) dest.delete();
-                                boolean renamed = cameraFile.renameTo(dest);
-                                if (renamed) {
-                                    currentPhotoPath = dest.getAbsolutePath();
-                                    loadPhoto(currentPhotoPath);
-                                } else {
-                                    try {
-                                        copyFile(cameraFile, dest);
-                                        currentPhotoPath = dest.getAbsolutePath();
-                                        loadPhoto(currentPhotoPath);
-                                    } catch (IOException e) {
-                                        Toast.makeText(requireContext(),
-                                                "Erreur enregistrement photo", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
+                            if (!dest.getParentFile().exists()) dest.getParentFile().mkdirs();
+
+                            try {
+                                // Toujours copier, jamais renomme
+                                copyFile(cameraFile, dest);
+                                cameraFile.delete(); // Nettoie le temp après copie réussie
+                                currentPhotoPath = dest.getAbsolutePath();
+                                loadPhoto(currentPhotoPath);
+                            } catch (IOException e) {
+                                Toast.makeText(requireContext(),
+                                        "Erreur enregistrement photo", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -128,6 +122,13 @@ public class ProfileOverlayFragment extends Fragment {
                 return;
             }
             profileManager.save(username, currentPhotoPath);
+
+            // Vide tout le cache Glide pour forcer le rechargement
+            Glide.get(requireContext()).clearMemory();
+            new Thread(() ->
+                    Glide.get(requireContext()).clearDiskCache()
+            ).start();
+
             Toast.makeText(requireContext(),
                     "Profil enregistré !", Toast.LENGTH_SHORT).show();
             close();
@@ -186,21 +187,31 @@ public class ProfileOverlayFragment extends Fragment {
     }
 
     private String savePhotoFromUri(Uri uri) {
-        File dest = getProfilePhotoFile();
         File dir  = getProfileDir();
+        File dest = getProfilePhotoFile();
         if (!dir.exists()) dir.mkdirs();
-        if (dest.exists()) dest.delete(); // écrase l'ancienne
 
-        try (InputStream    in  = requireContext()
+        File temp = new File(dir, "gallery_temp_" + System.currentTimeMillis() + ".jpg");
+
+        try (InputStream     in  = requireContext()
                 .getContentResolver().openInputStream(uri);
-             FileOutputStream out = new FileOutputStream(dest)) {
+             FileOutputStream out = new FileOutputStream(temp)) {
             if (in == null) return null;
             byte[] buf = new byte[8192];
             int    len;
             while ((len = in.read(buf)) != -1) out.write(buf, 0, len);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        // Copie le temp
+        try {
+            copyFile(temp, dest);
+            temp.delete();
             return dest.getAbsolutePath();
         } catch (IOException e) {
             e.printStackTrace();
+            temp.delete();
             return null;
         }
     }

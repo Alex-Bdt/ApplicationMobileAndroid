@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.rien_a_cacher.R;
+
+import java.io.File;
 import java.util.List;
 
 public class WaitingRoomAdapter extends RecyclerView.Adapter<WaitingRoomAdapter.PlayerViewHolder> {
@@ -48,9 +50,12 @@ public class WaitingRoomAdapter extends RecyclerView.Adapter<WaitingRoomAdapter.
 
         if (player.photoPath != null && !player.photoPath.isEmpty()) {
             Glide.with(holder.ivAvatar.getContext())
-                    .load(player.photoPath)
+                    .load(new File(player.photoPath))
                     .circleCrop()
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .signature(new com.bumptech.glide.signature.ObjectKey(
+                            String.valueOf(System.currentTimeMillis())))
                     .placeholder(R.drawable.ic_profile_placeholder)
                     .into(holder.ivAvatar);
         } else {

@@ -101,14 +101,16 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onProfileUpdated() {
-        // Rafraîchit le bouton profil dès la fermeture du fragment
         String photoPath = profileManager.getPhotoPath();
         if (!photoPath.isEmpty()) {
+            // Le timestamp en tag force Glide à traiter ça comme une nouvelle ressource
             Glide.with(this)
                     .load(new File(photoPath))
                     .circleCrop()
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
+                    .signature(new com.bumptech.glide.signature.ObjectKey(
+                            String.valueOf(System.currentTimeMillis())))
                     .into(btnProfile);
         } else {
             btnProfile.setImageResource(R.drawable.ic_profile_placeholder);
